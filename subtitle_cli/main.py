@@ -14,6 +14,9 @@ class SubtitlePlayer:
     def current_position(self):
         return f"[{self.index + 1:03d}/{len(self.subtitles):d}]"
 
+    def pause(self):
+        self.paused = True
+
     def toggle_pause(self):
         self.paused = not self.paused
 
@@ -99,6 +102,7 @@ def play_subtitles(stdscr, subtitle_player):
         elif key == KEY_LEFT:
             subtitle_player.previous()
             start_time = time.time() - subtitle["start"]
+            subtitle_player.pause()
             stdscr.clear()
             # Force display new subtitle
             stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))
@@ -107,6 +111,7 @@ def play_subtitles(stdscr, subtitle_player):
             if subtitle_player.has_next():
                 subtitle_player.next()
                 start_time = time.time() - subtitle["start"]
+                subtitle_player.pause()
             stdscr.clear()
             # Force display new subtitle
             stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))
