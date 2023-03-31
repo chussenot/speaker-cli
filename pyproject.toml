@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "subtitle-cli"
+version = "0.1.0"
+description = ""
+authors = ["Clement Hussenot <chussenot@gmail.com>"]
+readme = "README.md"
+packages = [{include = "subtitle_cli"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+click = "^8.1.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+subtitle-cli = "subtitle_cli.main:cli"

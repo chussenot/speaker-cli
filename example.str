@@ -1,0 +1,3203 @@
+1
+00:00:00,418 --> 00:00:03,510
+Donc voilà on est très content de de recevoir aujourd'hui pour
+
+2
+00:00:04,167 --> 00:00:08,575
+t'écouter sur ce sujet on temps de plus en plus parler
+
+3
+00:00:09,272 --> 00:00:13,829
+c'est dernières années le can engine je te laisse la parole
+
+4
+00:00:13,830 --> 00:00:20,910
+clément grand merci juste que moi je profite juste pour dire
+
+5
+00:00:20,911 --> 00:00:23,370
+que si vous avez des questions n'hésitez pas à les poser
+
+6
+00:00:24,750 --> 00:00:29,514
+dans le petit en cas à destination des questions et je
+
+7
+00:00:29,515 --> 00:00:33,702
+m'occuper de les com a gré de les poser à clément
+
+8
+00:00:33,703 --> 00:00:34,959
+à la fin de la présentation.
+
+9
+00:00:35,736 --> 00:00:41,693
+Voilà la parole merci pour cette introduction alors je bascule
+
+10
+00:00:41,694 --> 00:00:45,322
+sur la présentation donc bonjour à tous merci d'être présent
+
+11
+00:00:45,323 --> 00:00:48,295
+on va parler un petit de l'ingénierie de plateforme et
+
+12
+00:00:48,296 --> 00:00:52,335
+de cette art donc je vais passer pas mal de
+
+13
+00:00:52,336 --> 00:00:56,310
+choses différentes de concepts ça peut aller assez vite donc
+
+14
+00:00:56,311 --> 00:00:59,950
+n'hésitez pas à à poser des questions cette rapide d'introduction
+
+15
+00:00:59,951 --> 00:01:03,599
+je vais vous parler de moi rapidement mon dernier postes
+
+16
+00:01:03,600 --> 00:01:08,100
+c'était justement plateforme engine manager j'avais le charge d'une équipe
+
+17
+00:01:08,101 --> 00:01:12,869
+qui travaille sur différentes notion la de la plateforme et
+
+18
+00:01:12,870 --> 00:01:15,710
+puis j'ai travaillé aussi sur des notions de plateformes chez
+
+19
+00:01:15,711 --> 00:01:18,803
+vente clés donc c'est vraiment un retour d'expérience sur de
+
+20
+00:01:18,804 --> 00:01:24,306
+dernières expérience enfin de dernières entreprises que j'ai accompagné et
+
+21
+00:01:24,307 --> 00:01:25,822
+j'espère que ça va vous plaire à la fin de
+
+22
+00:01:25,823 --> 00:01:28,749
+la présentation j'essaie d'apporter un maximum de conseils si vous
+
+23
+00:01:28,750 --> 00:01:32,743
+voulez passer à l'action donc à louer une plateforme ou
+
+24
+00:01:32,744 --> 00:01:37,550
+développer votre propre plateforme et à construire vous on va
+
+25
+00:01:37,551 --> 00:01:42,318
+démarrer par un petit peu d'histoire et c'est quelques concepts
+
+26
+00:01:43,015 --> 00:01:45,305
+ce qui faut comprendre c'est que l'informatique ça n'a que
+
+27
+00:01:45,306 --> 00:01:50,375
+70 ans pour le 58 59 pour l'invention du premier
+
+28
+00:01:50,376 --> 00:01:57,654
+programme enregistré et qui se recharger sur une telle programme
+
+29
+00:01:57,655 --> 00:02:04,417
+et l'informatique ça ne fait que se réinventer copier des
+
+30
+00:02:04,418 --> 00:02:08,852
+pratiques dans certains métiers voilà il a 15 20 ans
+
+31
+00:02:08,853 --> 00:02:13,540
+on a eu des courants trois courants on va voir
+
+32
+00:02:13,541 --> 00:02:17,930
+ici le courant est le courant dev et cette notion
+
+33
+00:02:17,931 --> 00:02:24,499
+d'en plateforme plateforme ces trois courants il mais ils ont
+
+34
+00:02:24,500 --> 00:02:27,594
+des idées un peu différentes les uns des autres et
+
+35
+00:02:27,595 --> 00:02:31,122
+je j'aimerais brasser ici pour créer un peu de contexte
+
+36
+00:02:32,176 --> 00:02:35,146
+alors le c'est ce qu'on appelle la fiabilité des sites
+
+37
+00:02:35,817 --> 00:02:46,362
+c'était inventé par ben nord, chez Google actuellement gen et
+
+38
+00:02:46,363 --> 00:02:50,459
+il a plus de 4000 ingénieurs Google sous sa responsabilité.
+
+39
+00:02:51,317 --> 00:02:55,689
+Le principe du C'est d'avoir des sites qui sont plus
+
+40
+00:02:55,690 --> 00:02:58,769
+fiables possibles et pour ce faire on va utiliser un
+
+41
+00:02:58,770 --> 00:03:02,744
+certain nombre de pratiques classiques de l'administration système comme la
+
+42
+00:03:02,745 --> 00:03:06,464
+red, la répartition de charges mais on va aussi se
+
+43
+00:03:06,465 --> 00:03:11,119
+donner des objectifs et des indicateurs pour s'assurer que les
+
+44
+00:03:11,120 --> 00:03:15,559
+sites sont réellement toujours opérationnels et là on va parler
+
+45
+00:03:15,560 --> 00:03:20,209
+de s et c'est toutes ces notions là elles sont
+
+46
+00:03:20,210 --> 00:03:23,523
+dans un livre un livre sur le S qui est
+
+47
+00:03:23,524 --> 00:03:26,796
+disponible sur le site de Google et on va reparler
+
+48
+00:03:26,797 --> 00:03:29,829
+un petit peu notion de fiabilité que ça va être
+
+49
+00:03:30,370 --> 00:03:33,609
+des prérequis à la plateforme que vous pourriez avoir à
+
+50
+00:03:33,610 --> 00:03:34,109
+construire.
+
+51
+00:03:34,730 --> 00:03:40,659
+Le mouvement des développe celui assez intéressant et notamment il
+
+52
+00:03:40,660 --> 00:03:44,735
+a ça part des choses dans le retour de ce
+
+53
+00:03:44,736 --> 00:03:49,784
+qu'on appelle de plateforme actuellement ce mouvement dev développe est
+
+54
+00:03:49,785 --> 00:03:54,114
+là pour faire en sorte que les deux équipes qu'on
+
+55
+00:03:54,115 --> 00:03:57,710
+avait séparé une époque les 6 admin où les gens
+
+56
+00:03:57,711 --> 00:04:02,705
+des opérations et les développeurs recommence à travailler ensemble main
+
+57
+00:04:02,706 --> 00:04:07,071
+dans la main et arrêter ce qui était probablement à
+
+58
+00:04:07,072 --> 00:04:10,662
+l'époque perçu perçue comme quelque chose de pas forcément très
+
+59
+00:04:10,663 --> 00:04:14,351
+sain le développeurs développent une application jettent sa part de
+
+60
+00:04:14,352 --> 00:04:17,108
+fu murs et les op doivent se débrouiller de déployer
+
+61
+00:04:17,109 --> 00:04:19,985
+ça il n'y a pas de communication et voilà.
+
+62
+00:04:20,519 --> 00:04:23,632
+L'idée du mouvement dev c'est un ensemble de pratiques
+
+63
+00:04:23,633 --> 00:04:27,981
+qui sont issues du de tout ce qui été
+
+64
+00:04:27,982 --> 00:04:33,430
+plus ou moins écrit dans son manifeste agile parle
+
+65
+00:04:33,431 --> 00:04:41,279
+aussi inventeur de la méthode agile et l'idée vraiment
+
+66
+00:04:41,280 --> 00:04:44,919
+là c'est de utiliser les compétences des développeurs en
+
+67
+00:04:44,920 --> 00:04:48,774
+termes de programmation pour améliorer les opérations et on
+
+68
+00:04:48,775 --> 00:04:51,854
+va travailler à l'époque sur les outils qui existaient
+
+69
+00:04:51,855 --> 00:04:54,508
+donc des choses comme Jan par exemple tous ces
+
+70
+00:04:54,509 --> 00:04:59,478
+outils d'intégration continue pour gérer la qualité des appli
+
+71
+00:05:01,133 --> 00:05:02,570
+faire les release et déployer ça.
+
+72
+00:05:03,423 --> 00:05:04,820
+Vraiment l'objectif du dev développe c'est
+
+73
+00:05:04,821 --> 00:05:09,051
+surtout d'améliorer et de fluidifier les
+
+74
+00:05:09,052 --> 00:05:11,166
+cycles de développement et de déploiement.
+
+75
+00:05:12,618 --> 00:05:15,632
+Et on on arrive à plein notre sujet
+
+76
+00:05:16,250 --> 00:05:18,485
+alors plateforme gen en fait on ne sait
+
+77
+00:05:18,486 --> 00:05:24,491
+pas forcément qui est l'inventeur de ce courant.
+
+78
+00:05:24,492 --> 00:05:26,368
+Il y a plusieurs époques on a vu des
+
+79
+00:05:26,369 --> 00:05:28,806
+idées autour de plateforme autour des années 2000 l'huile
+
+80
+00:05:28,807 --> 00:05:32,559
+autour des années 2010 il a aussi une présentation
+
+81
+00:05:33,779 --> 00:05:36,139
+de Netflix en 2017 autour de cette notion.
+
+82
+00:05:36,979 --> 00:05:38,299
+Ce qui est sûr c'est que c'est
+
+83
+00:05:38,300 --> 00:05:41,269
+une invention plus ou moins commune d'un
+
+84
+00:05:41,270 --> 00:05:43,580
+ensemble d'entreprises dans la silicon kundalini.
+
+85
+00:05:45,294 --> 00:05:48,617
+Des grosses sociétés je reviendrai des citations c'est des gens
+
+86
+00:05:48,618 --> 00:05:53,068
+comme Facebook Netflix qui vont avoir des besoins de plateformes
+
+87
+00:05:53,725 --> 00:05:57,991
+puisqu'ils ont une grande part de leurs employés qui sont
+
+88
+00:05:58,649 --> 00:06:02,202
+des ingénieurs et il y a un besoin de proposer
+
+89
+00:06:02,203 --> 00:06:05,236
+une voix une sorte de voix royale pour déployer les
+
+90
+00:06:05,237 --> 00:06:10,524
+applications il les services après cette introduction je vais vous
+
+91
+00:06:10,525 --> 00:06:16,054
+proposer une petite définition de plateforme et aussi de ce
+
+92
+00:06:16,055 --> 00:06:22,828
+que doit faire les équipes plateformes donc la plateforme de
+
+93
+00:06:22,829 --> 00:06:25,181
+ce que j'en ai déjà expliqué ce que vous avez
+
+94
+00:06:25,182 --> 00:06:29,091
+peut-être déjà compris c'est une sorte de socle commun sur
+
+95
+00:06:29,092 --> 00:06:32,295
+lequel est produit les services vont être construits déployés opéré
+
+96
+00:06:32,296 --> 00:06:39,046
+opérée par les équipes de développement, les et un product
+
+97
+00:06:39,047 --> 00:06:44,830
+manager par exemple La responsabilité des équipes plateformes va donc
+
+98
+00:06:44,831 --> 00:06:47,836
+la conception ou le développement et surtout là maintenant c'est
+
+99
+00:06:47,837 --> 00:06:51,704
+les évolutions de cette plateforme.
+
+100
+00:06:51,705 --> 00:06:53,299
+Il faut vraiment répondre besoins
+
+101
+00:06:53,300 --> 00:06:54,677
+des utilisateurs de cette plateforme.
+
+102
+00:06:55,985 --> 00:07:01,267
+Et tout ça bien sûr dans l'optique de toujours accélérer
+
+103
+00:07:02,043 --> 00:07:06,802
+les cycles de développement et de déploiement et donc rendre
+
+104
+00:07:06,803 --> 00:07:11,588
+l'innovation disponible plus vite capable d'expérimenter enfin tout ce que
+
+105
+00:07:11,589 --> 00:07:16,612
+veut faire quelqu'un du produit sur des produits numériques digitaux
+
+106
+00:07:17,150 --> 00:07:25,231
+voilà la petite citation en tout cas la cote de
+
+107
+00:07:25,232 --> 00:07:28,867
+quelqu'un de peu connu qui est le fondateur de Facebook
+
+108
+00:07:28,868 --> 00:07:33,359
+et des cofondateur de facebook de désormais le l'état c'est
+
+109
+00:07:33,360 --> 00:07:36,359
+de dire que l'ingénierie de plateforme ça permet de bâtir
+
+110
+00:07:36,360 --> 00:07:40,334
+des fondations solides pour des produits à venir que les
+
+111
+00:07:40,335 --> 00:07:43,370
+produits existants pour des produits à venir et c'est quelque
+
+112
+00:07:43,371 --> 00:07:46,607
+chose qui doit être réutilisable encore et encore et qui
+
+113
+00:07:46,608 --> 00:07:50,332
+va évoluer et donc il faut voir ça comme quelque
+
+114
+00:07:50,333 --> 00:07:54,914
+chose un ensemble d'éléments et ça j'y reviendrai un petit
+
+115
+00:07:54,915 --> 00:08:00,244
+peu plus tard voici une définition alors après ce que
+
+116
+00:08:00,245 --> 00:08:05,019
+je vais vous expliquer on peut imaginer que finalement les
+
+117
+00:08:05,020 --> 00:08:11,034
+grosses des grosses ga femmes tous les grands groupes de
+
+118
+00:08:11,035 --> 00:08:15,385
+la silicon valley ont besoin de plateformes et que une
+
+119
+00:08:15,386 --> 00:08:20,156
+petite start n'en n'aurait aurait pas besoin mais probablement non
+
+120
+00:08:20,789 --> 00:08:25,429
+faut se dire c'est que vous pouvez construire votre plateforme
+
+121
+00:08:25,430 --> 00:08:29,518
+si vous avez des besoins très spécifiques mais sinon tous
+
+122
+00:08:29,519 --> 00:08:33,985
+les jours on voit actuellement des nouvelles plateformes publiques qui
+
+123
+00:08:33,986 --> 00:08:38,389
+s'ouvrent et donc il a un engouement ce mot de
+
+124
+00:08:38,390 --> 00:08:42,149
+plateforme engine et je pense un des gros besoins word
+
+125
+00:08:42,150 --> 00:08:45,829
+de l'année 2023 donc essayons de comprendre un petit peu
+
+126
+00:08:45,830 --> 00:08:49,302
+ce que c'est la question vous me posez c'est clément
+
+127
+00:08:49,921 --> 00:08:53,837
+qu'est-ce ce que c'est vraiment qu'une plateforme et je vous
+
+128
+00:08:53,838 --> 00:08:55,435
+ai dit que c'était modulaire il y a plein de
+
+129
+00:08:55,436 --> 00:09:00,075
+choses qui étaient autour de cette plateforme donc finalement qu'est
+
+130
+00:09:00,076 --> 00:09:02,466
+ce que c'est Ce qu'il qui est certain en tout
+
+131
+00:09:02,467 --> 00:09:04,872
+cas c'est que une plateforme c'est pas un projet pas
+
+132
+00:09:04,873 --> 00:09:10,132
+quelque chose qu'on planifie avec des un début une fin
+
+133
+00:09:10,133 --> 00:09:11,805
+et à la fin on a une plateforme et c'est terminé.
+
+134
+00:09:13,219 --> 00:09:14,979
+La plateforme justement et c'est pour ça que je
+
+135
+00:09:14,980 --> 00:09:17,939
+suis ici pour parler de la plateforme c'est qu'il
+
+136
+00:09:17,940 --> 00:09:19,939
+va voir ça comme un produit donc il y
+
+137
+00:09:19,940 --> 00:09:21,219
+a une stratégie qui va être mis en place
+
+138
+00:09:21,220 --> 00:09:23,613
+une stratégie produits ou une stratégie plateforme.
+
+139
+00:09:24,192 --> 00:09:26,949
+On va essayer de prioriser un certain nombre de
+
+140
+00:09:26,950 --> 00:09:31,797
+fonctionnalités nécessaires pour les utilisateurs de cette plateforme donc
+
+141
+00:09:31,798 --> 00:09:34,907
+toutes les personnes qui composent une future et puis
+
+142
+00:09:34,908 --> 00:09:36,542
+on va écrire une feuille de route faire de
+
+143
+00:09:36,543 --> 00:09:42,778
+la recherche utilisateur travailler la développeur par expérience et
+
+144
+00:09:42,779 --> 00:09:45,689
+puis on va surtout faire évoluer ce produit, gérer
+
+145
+00:09:45,690 --> 00:09:48,481
+ces cycles de vie, l'ajout de fonctionnalité dirait des
+
+146
+00:09:48,482 --> 00:09:55,763
+fonctionnalités, autour du des évolutions donc vraiment c'est quelque
+
+147
+00:09:55,764 --> 00:09:59,293
+chose sur le long terme c'est une histoire qui
+
+148
+00:09:59,294 --> 00:10:03,029
+ne s'arrête pas et la plateforme peut constamment évoluer.
+
+149
+00:10:05,978 --> 00:10:09,010
+C'est là où on va pouvoir un peu avancer
+
+150
+00:10:09,011 --> 00:10:12,122
+dans cette présentation et on va comprendre que ce
+
+151
+00:10:12,123 --> 00:10:14,412
+produit qu'on est développe il est au carrefour de
+
+152
+00:10:14,413 --> 00:10:19,599
+trois choses l'humain anglais vraiment les gens qui vont
+
+153
+00:10:19,600 --> 00:10:24,605
+consommer cette plateforme la technologie les technologies existantes qu'on
+
+154
+00:10:24,606 --> 00:10:28,041
+voudrait même peut-être inventé pour la plateforme et puis
+
+155
+00:10:28,042 --> 00:10:31,731
+le business c'est c'est-à-dire finalement cette plateforme elle est
+
+156
+00:10:31,732 --> 00:10:35,666
+là pour servir vraiment le business faire en sorte
+
+157
+00:10:38,499 --> 00:10:42,699
+le business marche et le business avoir un certain
+
+158
+00:10:42,700 --> 00:10:47,634
+temps de pré prérequis qui vont créer en tout
+
+159
+00:10:47,635 --> 00:10:50,514
+cas façonné cette plateforme dans une direction qui peut
+
+160
+00:10:50,515 --> 00:10:55,089
+être différente en fonction des organisation donc je vous
+
+161
+00:10:55,090 --> 00:10:57,289
+propose de parler du premier axe qui va être
+
+162
+00:10:57,290 --> 00:11:04,618
+jack humain une plateforme ça peut être un gros
+
+163
+00:11:04,619 --> 00:11:07,212
+changement dans une organisation alors des organisations elles ont
+
+164
+00:11:07,213 --> 00:11:12,017
+différentes je vous ai parlé du dev développe à
+
+165
+00:11:12,018 --> 00:11:14,891
+peu près 15 20 ans le dev développe a
+
+166
+00:11:14,892 --> 00:11:20,254
+été proposé aux collaborateurs de choisir leurs outils pour
+
+167
+00:11:20,255 --> 00:11:22,651
+accélérer les déploiement.
+
+168
+00:11:23,411 --> 00:11:26,367
+Ce qui fait qu'il y a eu beaucoup d'outils en
+
+169
+00:11:26,368 --> 00:11:29,698
+d'une organisation probablement votre organisation pour être un peu sous
+
+170
+00:11:29,699 --> 00:11:32,011
+forme de si et donc il y un ensemble de
+
+171
+00:11:32,012 --> 00:11:35,520
+pratiques qui sont très hétéro dans toute votre organisation.
+
+172
+00:11:35,521 --> 00:11:38,471
+Ça c'est pour des entreprises assez pour des nouvelles
+
+173
+00:11:38,472 --> 00:11:43,844
+entreprises c'est peut-être moins difficile de créer une plateforme
+
+174
+00:11:43,845 --> 00:11:45,884
+mais pas forcément Ce qui est sûr c'est que
+
+175
+00:11:45,885 --> 00:11:49,256
+la plateforme son objectif c'est de créer des interactions
+
+176
+00:11:49,257 --> 00:11:53,252
+plus en données entre les différentes parties ont besoin
+
+177
+00:11:53,253 --> 00:11:57,698
+de des des produits numériques et si possible à
+
+178
+00:11:57,699 --> 00:12:01,367
+moindre coût en manip des ressources qui vont être
+
+179
+00:12:01,368 --> 00:12:03,042
+standard des ressources de la plateforme mais des ressources
+
+180
+00:12:03,043 --> 00:12:03,901
+qui sont non.
+
+181
+00:12:06,328 --> 00:12:09,481
+Donc ce changement s'il y a un un écosystème
+
+182
+00:12:09,482 --> 00:12:13,033
+existant ça peut être effectivement très difficile de remettre
+
+183
+00:12:13,034 --> 00:12:18,714
+les et surtout de changer les pratiques pour y
+
+184
+00:12:18,715 --> 00:12:23,396
+arriver il faut inclure dès le début les utilisateurs
+
+185
+00:12:23,397 --> 00:12:29,057
+de la plateforme il faut pas voir forcément créer
+
+186
+00:12:29,058 --> 00:12:33,099
+from scratch une équipe plateforme bien poser les questions
+
+187
+00:12:33,100 --> 00:12:36,924
+développeurs de et aux équipes et aux futur teams
+
+188
+00:12:36,925 --> 00:12:41,723
+comprendre après quels sont leurs problèmes et essayer de
+
+189
+00:12:41,724 --> 00:12:45,232
+trouver avec des solutions pas des solutions pour toutes
+
+190
+00:12:45,233 --> 00:12:47,704
+les équipes mais c'est aussi de définir un standard
+
+191
+00:12:47,705 --> 00:12:49,953
+il va falloir faire des choix et avoir une
+
+192
+00:12:49,954 --> 00:12:54,343
+balance entre les besoins est-ce que le produit plateforme
+
+193
+00:12:54,344 --> 00:13:03,448
+va pouvoir proposer voilà alors ensuite je vous ai
+
+194
+00:13:03,449 --> 00:13:08,774
+parlé de différentes organisations des start de la silicon
+
+195
+00:13:08,775 --> 00:13:14,374
+con valley et en fait ces organisations proposent des
+
+196
+00:13:14,375 --> 00:13:18,705
+plateformes parce que leur mode leur modèle organisation avec
+
+197
+00:13:18,706 --> 00:13:22,722
+beaucoup beaucoup d'ingénieurs et une sorte de modèle organisation
+
+198
+00:13:23,300 --> 00:13:26,732
+sous forme de graphe avec beaucoup de de liberté
+
+199
+00:13:27,671 --> 00:13:28,670
+pour tous les collaborateurs.
+
+200
+00:13:28,671 --> 00:13:31,826
+C'est c'est-à-dire que chaque collaborateur peut modifier la la base
+
+201
+00:13:31,827 --> 00:13:36,199
+de code déployée et voilà finalement une plateforme c'est en
+
+202
+00:13:36,200 --> 00:13:39,639
+ça très pratique ce qu'on va pouvoir gérer les droits
+
+203
+00:13:39,640 --> 00:13:41,799
+et faire sorte que tout le monde puisse apporter quelque
+
+204
+00:13:41,800 --> 00:13:48,168
+chose apporter de l'innovation et voilà donc ces modèles plateformes
+
+205
+00:13:48,169 --> 00:13:52,497
+fonctionnent clairement dans des organisations qui sont comme ça sous
+
+206
+00:13:52,498 --> 00:13:57,452
+forme de graphe très fort et des organisations plus hiérarchique
+
+207
+00:13:57,453 --> 00:14:00,103
+je vais penser par exemple je donne un câble très
+
+208
+00:14:00,104 --> 00:14:04,090
+à la marge mais imaginons une organisation avec un par
+
+209
+00:14:04,091 --> 00:14:08,076
+un une organisation très très avec même du secret entre
+
+210
+00:14:08,077 --> 00:14:12,119
+chaque chaque quantité le modèle de plateforme n'aurait que peu
+
+211
+00:14:12,120 --> 00:14:17,024
+d'intérêt probablement encore un petit peu parlé et là je
+
+212
+00:14:17,025 --> 00:14:21,409
+vais juste développer une idée derrière les équipes de plateforme
+
+213
+00:14:22,186 --> 00:14:25,178
+vous avez ici un schéma qui a été partagé il
+
+214
+00:14:25,179 --> 00:14:31,835
+a deux trois semaines par Ad cut qui est architecte
+
+215
+00:14:32,890 --> 00:14:40,490
+renommée renommé il a été nommé chez Amazon Netflix il
+
+216
+00:14:40,491 --> 00:14:48,290
+a participé un bord de la s la chez bon
+
+217
+00:14:48,291 --> 00:14:50,362
+sa vision lui c'est qu'il n'y a pas une équipe
+
+218
+00:14:50,363 --> 00:14:53,492
+plateforme mais c'est vraiment la composante de plein de choses
+
+219
+00:14:54,242 --> 00:14:58,467
+il va y avoir très probablement et c'est besoin d'un
+
+220
+00:14:58,468 --> 00:15:01,678
+product manager mais aussi des gens qui connaissent le réseau
+
+221
+00:15:02,906 --> 00:15:07,270
+la répartition de charge les gens qui connaissent par exemple
+
+222
+00:15:08,563 --> 00:15:18,754
+de conteneurs les systèmes l'unique windows j'en passe et puis
+
+223
+00:15:19,968 --> 00:15:23,317
+par exemple qui savent écrire des api etc que ça
+
+224
+00:15:23,318 --> 00:15:24,952
+vous pouvez tout voir sur ce schéma qui un petit
+
+225
+00:15:24,953 --> 00:15:28,997
+petit voilà donc finalement vous n'avez pas une équipe plate
+
+226
+00:15:28,998 --> 00:15:31,552
+et vous avez plein de petites équipes qui vont deux
+
+227
+00:15:31,553 --> 00:15:38,809
+travailler ensemble pour créer ce produit pour les utilisateurs voilà
+
+228
+00:15:39,864 --> 00:15:43,731
+ce qui fait que probablement ce qui est le plus
+
+229
+00:15:43,732 --> 00:15:46,784
+important pour réussir à introduire une plateforme et y aller
+
+230
+00:15:46,785 --> 00:15:51,224
+par petits bout comme c'est de créer la confiance entre
+
+231
+00:15:51,225 --> 00:15:53,873
+les équipes plateformes et les équipes de dé développeurs qui
+
+232
+00:15:53,874 --> 00:15:55,188
+vont consommer le produit.
+
+233
+00:15:55,189 --> 00:15:56,662
+C'est ce qui va compter le plus
+
+234
+00:15:56,663 --> 00:15:58,256
+c'est ce qui va permettre de faire
+
+235
+00:15:58,257 --> 00:15:59,770
+sorte d'avoir une adoption de votre plateformes.
+
+236
+00:16:01,701 --> 00:16:03,497
+Alors après avoir à parlé un petit peu du
+
+237
+00:16:03,498 --> 00:16:10,337
+facteur humain on va prendre des technologies disponibles pour
+
+238
+00:16:10,338 --> 00:16:12,531
+pouvoir créer une plateforme puis si vous avez des
+
+239
+00:16:12,532 --> 00:16:14,845
+questions sur la partie humain humaine n'hésitez pas aller
+
+240
+00:16:14,846 --> 00:16:16,281
+les noter et je répondrai après.
+
+241
+00:16:17,493 --> 00:16:20,925
+Alors technologique ce que vous ai dit c'est que
+
+242
+00:16:20,926 --> 00:16:22,561
+après ce courant dev développe il y une sorte
+
+243
+00:16:22,562 --> 00:16:27,009
+de dé des dev développe fatigue et des outils
+
+244
+00:16:27,010 --> 00:16:31,149
+partout dans cette fameuse cycle de développement vous connaissez
+
+245
+00:16:31,969 --> 00:16:35,662
+on écrit on teste on déploie on opère puis
+
+246
+00:16:35,663 --> 00:16:39,857
+en mon on rep on collabore on construit etc
+
+247
+00:16:39,858 --> 00:16:42,069
+c'est cette boucle développe ce que vous connaissez connaissez
+
+248
+00:16:42,070 --> 00:16:45,939
+probablement donc on voit ici une sorte de radar
+
+249
+00:16:45,940 --> 00:16:51,022
+des technologies et faire des choix technologiques c'est compliqué
+
+250
+00:16:51,023 --> 00:16:53,896
+et plus vous avez un nombre d'importantes d'équipe qui
+
+251
+00:16:53,897 --> 00:16:56,371
+font ça chez vous, que vous avez le chances
+
+252
+00:16:56,372 --> 00:16:59,679
+qui est énormément de technologies officielles dans votre organisation
+
+253
+00:17:01,497 --> 00:17:03,655
+ça crée carrément une fatigue et puis vous avez
+
+254
+00:17:03,656 --> 00:17:06,132
+certainement très peu d'experts sur chaque technologie ce qui
+
+255
+00:17:06,133 --> 00:17:07,751
+a probablement un risque aussi.
+
+256
+00:17:09,542 --> 00:17:13,214
+Donc si vous avez à créé une plateforme personne
+
+257
+00:17:13,215 --> 00:17:16,767
+avec qui vous allez poser sur le sujet vous
+
+258
+00:17:16,768 --> 00:17:20,579
+aurez énormément d'options autant que celles qui ont probablement
+
+259
+00:17:20,580 --> 00:17:23,599
+été choisies par toutes les équipes des vaccins organisation.
+
+260
+00:17:25,553 --> 00:17:29,978
+Notamment vous aurez des des questions à vous poser en
+
+261
+00:17:29,979 --> 00:17:32,370
+termes de ressources que vous avez consommer il va vous
+
+262
+00:17:32,371 --> 00:17:35,658
+falloir trois choses de base déjà créer votre plateforme ça
+
+263
+00:17:35,659 --> 00:17:40,013
+va être qu'on appelle du com du stockage par exemple
+
+264
+00:17:40,014 --> 00:17:44,583
+donc vous avez des solutions de cloud public la journaliste
+
+265
+00:17:44,584 --> 00:17:48,619
+quelques-unes unes à double azure j'ai et vous avez aussi
+
+266
+00:17:48,620 --> 00:17:53,748
+la possibilité de faire votre plateforme sur du prémices vous
+
+267
+00:17:53,749 --> 00:17:57,822
+avez aussi la possibilité d'écrire votre propre cloud privé sur
+
+268
+00:17:57,823 --> 00:17:59,620
+vos data center.
+
+269
+00:17:59,621 --> 00:18:02,169
+Donc il y a un choix technologique à faire
+
+270
+00:18:02,945 --> 00:18:07,252
+et ça ça va probablement dépendre de la des
+
+271
+00:18:07,253 --> 00:18:10,539
+besoins de vos équipes de développement mais aussi besoins
+
+272
+00:18:10,540 --> 00:18:12,119
+de votre organisation et du business.
+
+273
+00:18:15,139 --> 00:18:17,939
+Pour déployer vite parce que l'objectif de cette plateforme
+
+274
+00:18:17,940 --> 00:18:21,543
+c'est quand même toujours on a dit d'accélérer les
+
+275
+00:18:21,544 --> 00:18:23,656
+cycles de développement et les cycles de mise en
+
+276
+00:18:23,657 --> 00:18:26,627
+production vous allez avoir des besoins d'or.
+
+277
+00:18:27,897 --> 00:18:31,767
+Alors il y a la la virtual visualisation mais il
+
+278
+00:18:31,768 --> 00:18:36,251
+y a aussi la et actuellement la technologie qui a
+
+279
+00:18:36,252 --> 00:18:41,835
+gagné et c'est qr tests donc hubert kubernetes permet de
+
+280
+00:18:41,836 --> 00:18:45,122
+déployer très vite des choses mais en revanche il est
+
+281
+00:18:45,123 --> 00:18:48,275
+sûr que ça peut être assez compliqué aborder pour toutes
+
+282
+00:18:48,276 --> 00:18:55,319
+les équipes des type elles forcément toutes les équipes sont
+
+283
+00:18:55,320 --> 00:18:57,076
+pas très à l'aise avec ça ça peut être de
+
+284
+00:18:57,077 --> 00:18:59,928
+plus en plus compliqué vous allez voir à déployer ce
+
+285
+00:18:59,929 --> 00:19:07,412
+qu'on appelle des différentes choses pour par exemple et ça
+
+286
+00:19:07,413 --> 00:19:09,645
+devient de plus en plus compliqué donc pouvoir le confier
+
+287
+00:19:09,646 --> 00:19:14,110
+équipe plateforme et simplifier des choses un vrai besoin et
+
+288
+00:19:14,111 --> 00:19:19,073
+sur un vrai soulagement pour les qui vont pouvoir se
+
+289
+00:19:19,074 --> 00:19:20,550
+concentrer sur la valeur de leurs produits.
+
+290
+00:19:22,865 --> 00:19:27,670
+Une des briques technologiques sous-jacente qui est très utilisé pour
+
+291
+00:19:27,671 --> 00:19:32,298
+la conception de plateformes et des solutions comme comme cube
+
+292
+00:19:32,299 --> 00:19:37,262
+mais autres tout à fait être des choses que utilisez
+
+293
+00:19:37,263 --> 00:19:40,535
+vous allez aussi avoir besoin d'automatiser des choses justement pour
+
+294
+00:19:40,536 --> 00:19:43,384
+créer et dupliquer un certain nombre de ressources et crédits
+
+295
+00:19:43,385 --> 00:19:47,571
+les architectures pour l'ensemble de ces équipes afin de déployer
+
+296
+00:19:47,572 --> 00:19:50,762
+leur services et pour cela il y a plein d'outils
+
+297
+00:19:50,763 --> 00:19:53,075
+tiges j'en ai mis que de mais les plus connus
+
+298
+00:19:53,076 --> 00:19:58,239
+sur par exemple les terra des ce comme un plus
+
+299
+00:19:58,240 --> 00:20:03,464
+particulièrement pour le provision donc rajouter les applications nécessaires sur
+
+300
+00:20:04,041 --> 00:20:09,983
+vos sur vos machines voilà et puis si ce que
+
+301
+00:20:09,984 --> 00:20:14,209
+va avoir à faire l'équipe plateforme c'est d'essayer de ration
+
+302
+00:20:15,309 --> 00:20:19,629
+l'ensemble des pipeline qui été créés ou en tout cas
+
+303
+00:20:19,630 --> 00:20:23,122
+d'avoir une offre de pipeline standard pour créer c'est chemin
+
+304
+00:20:23,123 --> 00:20:29,708
+royaux golden vers la plateforme la cette équipe va se
+
+305
+00:20:29,709 --> 00:20:35,107
+poser les mêmes questions que les type classique des qui
+
+306
+00:20:35,108 --> 00:20:37,340
+ont eu à des meilleures applications elles vont se poser
+
+307
+00:20:37,341 --> 00:20:42,582
+des questions autour des environnements les environnements il va falloir
+
+308
+00:20:42,583 --> 00:20:47,816
+offrir donc un environnement de développement, multi branches et etou
+
+309
+00:20:47,817 --> 00:20:51,983
+un seul environnement unique dans lequel on va déployer plein
+
+310
+00:20:51,984 --> 00:20:54,577
+de versions va faire ce qu'on appelle du can et
+
+311
+00:20:54,578 --> 00:20:57,610
+on va ensuite se concentrer sur comment ou tel trafic
+
+312
+00:20:57,611 --> 00:21:03,459
+vers une ou plusieurs versions déployée et ainsi être en
+
+313
+00:21:03,460 --> 00:21:06,935
+capacité de faire des expérimentations regardez comment les utilisateurs se
+
+314
+00:21:06,936 --> 00:21:10,061
+comportent qui est très bon pour faire évoluer le produit
+
+315
+00:21:10,062 --> 00:21:12,972
+voilà donc ça c'est des choses que va pouvoir offrir
+
+316
+00:21:12,973 --> 00:21:16,760
+et c'est de simplifier et standard une équipe ou des
+
+317
+00:21:16,761 --> 00:21:23,597
+équipes en tout cas plateforme ça c'est pour les technologies
+
+318
+00:21:23,598 --> 00:21:27,029
+derrière une plateforme donc vous voyez c'est des choses que
+
+319
+00:21:27,729 --> 00:21:31,289
+vous connaissez si vous êtes dans la tech mais l'idée
+
+320
+00:21:31,290 --> 00:21:34,104
+derrière tout ça c'est de faire un un produit alors
+
+321
+00:21:34,105 --> 00:21:38,738
+ce produit et cette plateforme elle est vraiment là pour
+
+322
+00:21:38,739 --> 00:21:42,829
+porter le business et on va la façonner on va
+
+323
+00:21:42,830 --> 00:21:45,349
+façonner ce produit on va façonner cette plateforme fonction d'un
+
+324
+00:21:45,350 --> 00:21:48,709
+certain nombre de dimensions qui vont être plus ou moins
+
+325
+00:21:48,710 --> 00:21:50,189
+importantes en fonction des organisations.
+
+326
+00:21:51,323 --> 00:21:54,153
+Différente si vous faites vous par exemple vous voulez
+
+327
+00:21:54,154 --> 00:21:56,227
+faire une offre passe vous allez créer une plateforme
+
+328
+00:21:56,228 --> 00:21:58,898
+publique pour des clients vous vous n'allez pas du
+
+329
+00:21:58,899 --> 00:22:01,346
+tout avoir les mêmes prérequis si vous faites une
+
+330
+00:22:01,347 --> 00:22:06,051
+plateforme interne avoir d'autres donc les dimensions les plus
+
+331
+00:22:06,052 --> 00:22:07,766
+communes qu'on peut retrouver à peu près sur toutes
+
+332
+00:22:07,767 --> 00:22:11,374
+les plateformes j'en ai listé ici certaines après je
+
+333
+00:22:11,375 --> 00:22:13,614
+vais peut-être vous parler de dimensions qui peuvent être
+
+334
+00:22:13,615 --> 00:22:16,695
+plus spécifiques à une organisation mais on va voir
+
+335
+00:22:16,696 --> 00:22:21,065
+des dimensions comme facilité d'a d'utilisation effectivement l'idée c'est
+
+336
+00:22:21,066 --> 00:22:23,861
+de retirer une sorte de charge cognitive donc les
+
+337
+00:22:23,862 --> 00:22:30,328
+développeurs doivent être capable d'utiliser cette plateforme les pipeline
+
+338
+00:22:30,947 --> 00:22:32,065
+avec facilité.
+
+339
+00:22:32,919 --> 00:22:35,740
+Mais aussi la plateforme doit apporter un certain une fiabilité
+
+340
+00:22:36,360 --> 00:22:41,093
+c'est ce qu'a attend l'organisation elle souhaite que tout ce
+
+341
+00:22:41,094 --> 00:22:43,448
+qui soit tout ce qui a déployer vie à la
+
+342
+00:22:43,449 --> 00:22:48,357
+plateforme eh bien ça casse pas voilà et puis cette
+
+343
+00:22:48,358 --> 00:22:52,482
+plateforme peut-être elle peut avoir une dimension de coût importante
+
+344
+00:22:52,483 --> 00:22:53,758
+on va essayer de faire en sorte que tout ce
+
+345
+00:22:53,759 --> 00:22:59,482
+qui est déployé sur la plateforme ça reste maîtriser en
+
+346
+00:22:59,483 --> 00:23:01,240
+termes de coûts et qui n'est pas une explosion du
+
+347
+00:23:01,241 --> 00:23:06,195
+coup donc vraiment bien être en capacité en maîtrise des
+
+348
+00:23:06,196 --> 00:23:09,970
+coûts mais aussi voilà la plateforme elle est là pour
+
+349
+00:23:09,971 --> 00:23:14,464
+accélérer la vélocité les j'en ai déjà pas parlé on
+
+350
+00:23:14,465 --> 00:23:18,300
+va demander aussi à la la plateforme de garantir une
+
+351
+00:23:18,301 --> 00:23:21,696
+certaine performance que tous les applications les services qui vont
+
+352
+00:23:21,697 --> 00:23:27,276
+être sur cette plateforme on souhaite il puisse répondre vite
+
+353
+00:23:28,012 --> 00:23:30,563
+donc imaginons que la plateforme que vous êtes en train
+
+354
+00:23:30,564 --> 00:23:34,971
+de concevoir à beaucoup d'interaction entre un ensemble de services
+
+355
+00:23:34,972 --> 00:23:38,127
+ou micro service plus il y a des interactions plus
+
+356
+00:23:38,128 --> 00:23:42,493
+peut-être votre latence être importante et les équipes plateformes où
+
+357
+00:23:42,494 --> 00:23:46,200
+les gens qui développent cette plateforme doivent garantir que les
+
+358
+00:23:46,201 --> 00:23:51,953
+services qui sont sur cette plateforme répondre vite voilà vous
+
+359
+00:23:51,954 --> 00:23:55,958
+allez pouvoir avoir aussi des dimensions comme la sécurité sûreté.
+
+360
+00:23:56,948 --> 00:24:01,294
+Voilà ça c'est assez évident l'idée c'est que cette plateforme
+
+361
+00:24:01,295 --> 00:24:04,724
+soit par exemple capable de résister à des attaques de
+
+362
+00:24:04,725 --> 00:24:10,534
+type services ou de services distribués des doses et je
+
+363
+00:24:10,535 --> 00:24:15,981
+passe tout ça voilà les critères plus spécifiques, une organisation
+
+364
+00:24:15,982 --> 00:24:19,770
+pourrait par exemple souhaiter que la plateforme soit soute et
+
+365
+00:24:19,771 --> 00:24:23,080
+on fera en sorte de déployer cette plateforme dans des
+
+366
+00:24:23,081 --> 00:24:26,254
+régions ou dans des data à center dont on sait
+
+367
+00:24:26,255 --> 00:24:30,494
+que l'origine de l'électricité est plus verte voilà on va
+
+368
+00:24:30,495 --> 00:24:34,940
+de cases pour les data center on a des économies
+
+369
+00:24:34,941 --> 00:24:38,153
+d'eau dans les data ça ça peut être des choix
+
+370
+00:24:39,304 --> 00:24:42,820
+qui sont très importants qui vont façonner tous ces choix
+
+371
+00:24:42,821 --> 00:24:50,542
+vont façonner votre plateforme clairement voilà en revanche un objectif
+
+372
+00:24:50,543 --> 00:24:53,175
+commun je vous parlais de fait tout à l'heure comme
+
+373
+00:24:53,176 --> 00:24:58,095
+dimension probablement importante cet objectif de résilience la plupart des
+
+374
+00:24:58,096 --> 00:25:00,926
+plateformes on va leur demander de faire en sorte qu'elles
+
+375
+00:25:00,927 --> 00:25:05,768
+soient capables de toujours opérer repérer les services un maximum
+
+376
+00:25:05,769 --> 00:25:07,885
+et là on va parler de c'est des choses qui
+
+377
+00:25:07,886 --> 00:25:12,854
+sont qui ont été définies par le courant S donc
+
+378
+00:25:12,855 --> 00:25:16,450
+on va par exemple demander un de 9 9.
+
+379
+00:25:16,451 --> 00:25:19,447
+9 et on veut que le service soit toujours disponible
+
+380
+00:25:19,448 --> 00:25:22,898
+ou que le service puisse continuer à fonctionner mais dans
+
+381
+00:25:22,899 --> 00:25:27,966
+un mode plus dégradé voilà donc ça probablement une des
+
+382
+00:25:27,967 --> 00:25:31,451
+dimensions la plus importante pour le business je veux que
+
+383
+00:25:31,452 --> 00:25:34,559
+le services soient là et que mes utilisateurs finaux soient
+
+384
+00:25:34,560 --> 00:25:40,038
+toujours servis parce qu'une interruption de services pour une organisation
+
+385
+00:25:40,039 --> 00:25:44,992
+qui n que sur internet typiquement nos que sur internet
+
+386
+00:25:44,993 --> 00:25:48,043
+dans cinq cinq pays c'est cinq pays en europe fait
+
+387
+00:25:48,044 --> 00:25:53,704
+plusieurs millions de chiffre d'affaires par par jour donc un
+
+388
+00:25:53,705 --> 00:25:56,016
+arrêt de 10 minutes c'est une énorme perte de chiffre
+
+389
+00:25:56,017 --> 00:26:00,549
+à fait donc elle est très importante une petite citation
+
+390
+00:26:00,550 --> 00:26:03,909
+avant de regarder un petit peu 8 critères que j'ai
+
+391
+00:26:03,910 --> 00:26:09,376
+défini qui permettent de avoir une plateforme ré c'est cette
+
+392
+00:26:09,953 --> 00:26:12,585
+citation qui dit que finalement la résilience c'est va être
+
+393
+00:26:12,586 --> 00:26:17,049
+la capacité d'anticiper les choses de comprendre gérer des changements
+
+394
+00:26:18,707 --> 00:26:21,463
+dans des systèmes qui sont so et complexes.
+
+395
+00:26:22,542 --> 00:26:26,114
+Et cette so technique elle est clé.
+
+396
+00:26:26,115 --> 00:26:29,274
+Dire que les gens qui sont sur la plateforme les
+
+397
+00:26:29,275 --> 00:26:34,209
+utilisateurs de la plateforme forcément l'influence et ils vont mettre
+
+398
+00:26:34,210 --> 00:26:37,205
+en place un certain nombre de façons de faire de
+
+399
+00:26:37,206 --> 00:26:42,694
+process et la plateforme ça va être à la fois
+
+400
+00:26:42,695 --> 00:26:45,487
+des utilisateurs mais aussi des composants qui ont été choisies
+
+401
+00:26:45,488 --> 00:26:47,523
+pour pour créer cette plateforme.
+
+402
+00:26:47,524 --> 00:26:49,479
+Et les deux aspects vont être très importants
+
+403
+00:26:49,480 --> 00:26:51,075
+si vous voulez quoi plateforme sont ré.
+
+404
+00:26:52,447 --> 00:26:57,356
+Donc la c'est huit principes ici on va voir
+
+405
+00:26:57,357 --> 00:27:01,003
+d'abord quatre principes qui sont purement techniques on va
+
+406
+00:27:01,004 --> 00:27:03,161
+essayer d'avoir une plateforme qui a le bon niveau
+
+407
+00:27:03,162 --> 00:27:07,236
+d d'attraction justement pour soit plus utilisé pour pour
+
+408
+00:27:07,237 --> 00:27:10,268
+les utilisateurs finaux dans l.
+
+409
+00:27:11,046 --> 00:27:13,563
+La mod on va voir des choses qui peuvent
+
+410
+00:27:13,564 --> 00:27:19,324
+s se composer à diversité chaque communauté de développeur.
+
+411
+00:27:19,325 --> 00:27:22,593
+Alors pour vous donner un ordre d'idée mais chez
+
+412
+00:27:22,594 --> 00:27:25,838
+Man c'est 500 développeurs pour 1000 personnes et chez
+
+413
+00:27:25,839 --> 00:27:30,112
+vente privées actuellement en c'est 800 développeurs de attaque
+
+414
+00:27:30,113 --> 00:27:31,870
+pour un groupe de environ 100 000 personnes.
+
+415
+00:27:33,362 --> 00:27:35,396
+Donc foutez imaginer qu'il y a plein de comités
+
+416
+00:27:35,397 --> 00:27:39,822
+développeurs différentes avec des technologies différentes maîtrisé gens qui
+
+417
+00:27:39,823 --> 00:27:43,505
+font du java à des pratiques aussi très différentes
+
+418
+00:27:43,506 --> 00:27:47,290
+et ils ont probablement des besoins différents déploiement donc
+
+419
+00:27:47,291 --> 00:27:49,163
+il faut qu'elles puissent s'offrir qu'il a cette diversité
+
+420
+00:27:49,164 --> 00:27:51,974
+pour ces différentes communes et puis la fiabilité la
+
+421
+00:27:51,975 --> 00:28:01,569
+red Voilà ce justement sociaux du technique ou social
+
+422
+00:28:02,829 --> 00:28:05,309
+là on va avoir quatre choses qui vont être
+
+423
+00:28:05,310 --> 00:28:10,724
+importantes il faut donner le bon niveau d de
+
+424
+00:28:10,725 --> 00:28:15,376
+la plateforme et etou des systèmes précédents il faut
+
+425
+00:28:15,377 --> 00:28:18,928
+les équipes soient capables d'anticiper donc probablement les à
+
+426
+00:28:18,929 --> 00:28:23,894
+la gestion mais aussi peut-être travailler sur des pratiques
+
+427
+00:28:23,895 --> 00:28:28,174
+comme engine c'est-à-dire provoquer des pannes dans les systèmes
+
+428
+00:28:28,175 --> 00:28:30,974
+en regardant comment les équipes réagissent et comme les
+
+429
+00:28:30,975 --> 00:28:34,027
+systèmes réagissent imaginant un certain nombre d c'est le
+
+430
+00:28:34,028 --> 00:28:39,622
+principe et puis ensuite il va falloir travailler sur
+
+431
+00:28:39,623 --> 00:28:41,620
+la réactivité etc etc.
+
+432
+00:28:42,950 --> 00:28:46,697
+La dernière chose est probablement la plus importante c'est que
+
+433
+00:28:46,698 --> 00:28:50,006
+cette plateforme il va falloir la faire évoluer et tout
+
+434
+00:28:50,007 --> 00:28:54,451
+feedback tout incident est un moyen d'apprendre et de faire
+
+435
+00:28:54,452 --> 00:28:56,008
+évoluer le produit dans le bon sens.
+
+436
+00:28:56,886 --> 00:28:58,603
+Donc il y va y aura plein de manières de
+
+437
+00:28:58,604 --> 00:29:01,811
+faire vous allez pouvoir poser des questionnaires et pour les
+
+438
+00:29:01,812 --> 00:29:08,688
+interviewer avec des pratiques type de dans une pratique de
+
+439
+00:29:08,689 --> 00:29:11,596
+plus de user research et puis vous avez aussi pouvoir
+
+440
+00:29:11,597 --> 00:29:17,033
+faire des des passeports donc des des séances avec toutes
+
+441
+00:29:17,034 --> 00:29:19,470
+les personnes qui ont été impliquées par un incident de
+
+442
+00:29:19,471 --> 00:29:23,426
+production et de tirer un certain nombre d'apprentissage et de
+
+443
+00:29:23,427 --> 00:29:28,279
+faire évoluer l'application le service mais aussi la plateforme pour
+
+444
+00:29:28,280 --> 00:29:33,013
+pas que ça se reproduise voilà une autre chose très
+
+445
+00:29:33,014 --> 00:29:38,006
+importante pour faire évoluer votre plateforme ça va être de
+
+446
+00:29:38,007 --> 00:29:45,699
+travailler sur des métriques des indicateurs vous pouvez pas si
+
+447
+00:29:45,700 --> 00:29:50,389
+vous ne mesurez pas comprendre comment votre plateforme évolue et
+
+448
+00:29:50,390 --> 00:29:54,175
+si répond réellement aux dimensions que vous avez posé pour
+
+449
+00:29:54,176 --> 00:29:58,099
+la construire donc vous vous allez pouvoir regarder différentes choses
+
+450
+00:29:58,100 --> 00:30:00,616
+là j'ai mis des exemples ça peut être les coûts
+
+451
+00:30:00,617 --> 00:30:05,890
+de développement effectivement si on a 50 pratiques différentes pour
+
+452
+00:30:05,891 --> 00:30:09,102
+déployer quelque chose parce que chacun y a de sa
+
+453
+00:30:09,103 --> 00:30:13,578
+pratique dev développe la plateforme et le standard qu'elle offre
+
+454
+00:30:13,579 --> 00:30:17,908
+va permettre très très probablement une économie d'échelle mais c'est
+
+455
+00:30:17,909 --> 00:30:21,144
+aussi je vous ai dit l'arabie d'été donc on peut
+
+456
+00:30:21,145 --> 00:30:28,105
+mesurer la capacité des équipes le délai de mise sur
+
+457
+00:30:28,106 --> 00:30:31,496
+marché d'un nouveau produit depuis le lancement de ce projet
+
+458
+00:30:31,497 --> 00:30:37,870
+service jusqu'à sont sans déploiement et puis vous allez pouvoir
+
+459
+00:30:37,871 --> 00:30:41,070
+regarder différentes choses donc ces fameux low, les disponibilités tête
+
+460
+00:30:41,071 --> 00:30:45,238
+de service les performances des services mais aussi et on
+
+461
+00:30:45,239 --> 00:30:49,310
+parlait de ça la tradition est le fait que vos
+
+462
+00:30:49,311 --> 00:30:55,903
+développeurs sont contents moins fatigué et ravi de pouvoir déployer
+
+463
+00:30:55,904 --> 00:31:00,938
+plus vite sur cette plateforme chez plus de 50 changements
+
+464
+00:31:00,939 --> 00:31:05,024
+et déploiement par jour qui sont effectués sur la plateforme
+
+465
+00:31:06,038 --> 00:31:11,516
+voilà donc très important pouvez pas fixer ce que vous
+
+466
+00:31:11,517 --> 00:31:18,075
+pas mesurer donc vous allez travailler sur les feedback les
+
+467
+00:31:18,076 --> 00:31:20,955
+post les interviews et les questionnaires mais il faut aussi
+
+468
+00:31:20,956 --> 00:31:24,115
+mesurer un certain nombre de choses pour voir des dérives
+
+469
+00:31:24,116 --> 00:31:27,510
+sur votre plateforme en tout cas trouver des idées et
+
+470
+00:31:28,210 --> 00:31:34,462
+c'est les choses on va passer aux petites aux petit
+
+471
+00:31:34,463 --> 00:31:39,750
+conseils si vous voulez choisir une plateforme et où la
+
+472
+00:31:40,726 --> 00:31:46,714
+donc déjà ce qu'il faut c'est se donner des limites.
+
+473
+00:31:47,253 --> 00:31:49,971
+Vous n'allez pas pouvoir développer une plateforme pour répondre
+
+474
+00:31:49,972 --> 00:31:54,496
+à tous les besoins clairement et surtout l'idée c'est
+
+475
+00:31:54,497 --> 00:31:58,966
+de simplifier des choses simplifié parce que c'est actuellement
+
+476
+00:31:58,967 --> 00:32:01,537
+très complexe peut être très complexe pour la développeurs
+
+477
+00:32:01,538 --> 00:32:02,637
+de faire beaucoup de choix.
+
+478
+00:32:03,575 --> 00:32:06,571
+Et certains développeurs ne veulent
+
+479
+00:32:06,572 --> 00:32:07,970
+pas forcément faire du dev.
+
+480
+00:32:09,181 --> 00:32:11,714
+Donc il faut leur offrir quelque chose un produit.
+
+481
+00:32:12,610 --> 00:32:14,045
+Vous allez donc faire des choix et vous
+
+482
+00:32:14,046 --> 00:32:16,796
+allez probablement devoir un certain nombre de choses.
+
+483
+00:32:17,529 --> 00:32:21,161
+Et il faut la bonne balance entre votre offre.
+
+484
+00:32:22,278 --> 00:32:23,595
+Ce que vous pouvez proposer en termes
+
+485
+00:32:23,596 --> 00:32:28,819
+d'innovation, l'accès à des services type big
+
+486
+00:32:29,955 --> 00:32:34,519
+sur Différents services d'intelligence artificielle par exemple
+
+487
+00:32:34,520 --> 00:32:36,138
+et aussi ce que vous fermez.
+
+488
+00:32:36,837 --> 00:32:37,876
+Un certain nombre de contraintes que
+
+489
+00:32:37,877 --> 00:32:38,995
+vous allez mettre ça votre plateforme.
+
+490
+00:32:39,794 --> 00:32:43,830
+Voilà Et ça c'est très important. Pas tout tout faire.
+
+491
+00:32:44,844 --> 00:32:49,997
+Clairement Et en pour l'adoption de la plateforme ce
+
+492
+00:32:49,998 --> 00:32:52,569
+qu'il va falloir c'est mettre en lumière finalement les
+
+493
+00:32:52,570 --> 00:32:56,925
+différentes pratiques actuelles et puis aussi mettre en lu
+
+494
+00:32:56,926 --> 00:32:58,803
+ce qu'il se passe sur votre plateforme.
+
+495
+00:32:58,804 --> 00:33:00,162
+Faut que vous vous donner un
+
+496
+00:33:00,163 --> 00:33:02,255
+maximum de visibilité sur votre plateforme.
+
+497
+00:33:02,256 --> 00:33:05,095
+Les gens comprennent comment les services et les l'application
+
+498
+00:33:05,096 --> 00:33:07,375
+qui sont déployée se comportent sur le champ de
+
+499
+00:33:07,376 --> 00:33:11,875
+bataille en production et aussi elles se comportait avant
+
+500
+00:33:12,510 --> 00:33:15,470
+sur les anciens systèmes de déploiement et c'est ce
+
+501
+00:33:15,471 --> 00:33:21,241
+qui va vraiment encourager cette adoption voilà la transparence
+
+502
+00:33:21,242 --> 00:33:24,514
+et si vous la mettez en place ça peut
+
+503
+00:33:24,515 --> 00:33:27,866
+être un prérequis pour une très bonne option de
+
+504
+00:33:27,867 --> 00:33:29,840
+votre votre plateforme.
+
+505
+00:33:29,841 --> 00:33:32,840
+Donc une petite définition de la effectivement c'est parce
+
+506
+00:33:32,841 --> 00:33:34,440
+que je ne l'ai pas donné mais c'est le
+
+507
+00:33:34,441 --> 00:33:37,480
+fait de pouvoir mon des systèmes et etou des
+
+508
+00:33:37,481 --> 00:33:42,455
+business avec différentes différentes choses ça peut être ce
+
+509
+00:33:42,456 --> 00:33:45,269
+qu'on appelle dès l'europe des traces des métriques que
+
+510
+00:33:45,270 --> 00:33:50,174
+les systèmes sont capables de produire et puis de
+
+511
+00:33:50,175 --> 00:33:54,104
+montrer ça de gr ça d'en faire des dashboard
+
+512
+00:33:55,255 --> 00:33:58,495
+ça ça permet justement de d'identifier des problèmes.
+
+513
+00:34:02,870 --> 00:34:05,230
+Je vous ai dit que chez j'avais une petite équipe
+
+514
+00:34:05,231 --> 00:34:10,470
+charge qui s'appelait pu cette équipe avait justement pour charge
+
+515
+00:34:10,471 --> 00:34:13,956
+un certain nombre de choses qui sont clés puisqu'elles sont
+
+516
+00:34:13,957 --> 00:34:17,025
+permis de faire évoluer le produit sur le long terme
+
+517
+00:34:17,026 --> 00:34:21,065
+et cette équipe avait pour charge tous les processus de
+
+518
+00:34:21,066 --> 00:34:23,259
+gestion d elle a mis en place un outil pour
+
+519
+00:34:23,260 --> 00:34:28,443
+gérer nano lui aussi le budget autour de avec une
+
+520
+00:34:28,444 --> 00:34:33,051
+plateforme sas qui que on a mis en place et
+
+521
+00:34:33,052 --> 00:34:36,806
+on a fait évoluer avec toute l'ingénierie et toute la
+
+522
+00:34:36,807 --> 00:34:41,204
+tech des pratiques de engine on mettant en place des
+
+523
+00:34:41,205 --> 00:34:47,525
+événements bien pour de déterminer des endroits avec des faiblesses
+
+524
+00:34:47,526 --> 00:34:51,065
+que les collaborateurs connaissent imagine les expérimentations cassées.
+
+525
+00:34:52,125 --> 00:34:54,018
+Ça forcément en tire un certain
+
+526
+00:34:54,019 --> 00:34:55,614
+nombre d'apprentissage et ça nourrit la
+
+527
+00:34:55,615 --> 00:34:57,192
+plateforme les évolutions la plateforme.
+
+528
+00:34:59,087 --> 00:35:01,503
+Travailler sur la performance web à dire s'équiper
+
+529
+00:35:02,854 --> 00:35:07,962
+faire des différents tests de performance travailler sur
+
+530
+00:35:07,963 --> 00:35:11,010
+ce qu'on appelle du profil donc mesurer réellement
+
+531
+00:35:11,011 --> 00:35:12,946
+le temps passé dans les programmes.
+
+532
+00:35:13,723 --> 00:35:15,918
+Tous ces outils vont permettre de comprendre ce qui
+
+533
+00:35:15,919 --> 00:35:19,431
+se passe et toujours d'améliorer ce produit plateforme.
+
+534
+00:35:20,005 --> 00:35:22,942
+Et puis aussi des pratiques comme les pratiques finance
+
+535
+00:35:23,641 --> 00:35:27,956
+donc c'est dire les qui permettent d'analyser les factures
+
+536
+00:35:27,957 --> 00:35:30,805
+des clubs pro d'or public vont permettre de faire
+
+537
+00:35:30,806 --> 00:35:33,794
+des choix d'architecture des choix technologiques dans les différents
+
+538
+00:35:33,795 --> 00:35:40,229
+composants qu'on va choisir chez w par exemple voilà
+
+539
+00:35:40,230 --> 00:35:49,442
+des choix optimum avec les dépenses les plus adaptés
+
+540
+00:35:50,296 --> 00:35:56,855
+voilà dernière petite chose effectivement il faut savoir votre
+
+541
+00:35:56,856 --> 00:35:59,095
+plateforme va faire probablement que grossir parce que vous
+
+542
+00:35:59,096 --> 00:36:01,775
+allez rajouter des choses et fonctionnalités en fonction des
+
+543
+00:36:01,776 --> 00:36:05,130
+dimensions que vous avez choisi et puis votre équipe
+
+544
+00:36:05,910 --> 00:36:10,310
+plateforme une fois que votre plateforme une certaines certainement
+
+545
+00:36:10,311 --> 00:36:14,325
+une maturité elle aussi la grandir voilà donc il
+
+546
+00:36:14,326 --> 00:36:17,565
+faut y aller progressivement et si vous avez la
+
+547
+00:36:17,566 --> 00:36:22,340
+bonne adoption et que votre plateforme de devient standard
+
+548
+00:36:22,341 --> 00:36:25,340
+et le chemin la voix royale pour déployer vous
+
+549
+00:36:25,341 --> 00:36:28,875
+allez voir plateforme qui va être assez grande et
+
+550
+00:36:28,876 --> 00:36:31,435
+qu'une bonne maturité et qui reprendra aux enjeux au
+
+551
+00:36:31,436 --> 00:36:31,935
+business.
+
+552
+00:36:33,275 --> 00:36:38,808
+L'ensemble de faire ou de faux raisonnements la plateforme elle
+
+553
+00:36:38,809 --> 00:36:40,845
+est pas là pour régler tous les problèmes et il
+
+554
+00:36:40,846 --> 00:36:45,135
+restera de vous pas un standard en tout cas pas
+
+555
+00:36:45,136 --> 00:36:46,975
+de faire en sorte que votre plateforme réponde à tous
+
+556
+00:36:46,976 --> 00:36:49,415
+les besoins et là je vous avais parlé tout à
+
+557
+00:36:49,416 --> 00:36:53,215
+l'heure de cette balance entre ce qu'on ouvre ce qu'on
+
+558
+00:36:53,216 --> 00:36:56,143
+fait et puis il y a des équipes qui c'est
+
+559
+00:36:56,144 --> 00:36:59,134
+très justifiée ne peuvent pas utiliser la plateforme et ce
+
+560
+00:36:59,135 --> 00:37:02,444
+sera de comprendre pourquoi et ils pourront continuer à d'évoluer
+
+561
+00:37:02,445 --> 00:37:03,481
+à déployer les choses.
+
+562
+00:37:04,494 --> 00:37:08,485
+Comme il le souhaite voilà l'objectif de la plateforme c'est
+
+563
+00:37:08,486 --> 00:37:14,450
+vraiment d'apporter du progrès n'est pas d'être parfaite et une
+
+564
+00:37:14,451 --> 00:37:19,530
+dernière chose je l'ai déjà expliqué c'est très important qu'au
+
+565
+00:37:19,531 --> 00:37:23,985
+niveau on va dire si level veulent donc les soit
+
+566
+00:37:23,986 --> 00:37:27,505
+sponsor d'une plateforme parce qu'il ya un besoin de ration
+
+567
+00:37:27,506 --> 00:37:30,520
+parce qu'il ya besoin injecté des dimensions business dans ce
+
+568
+00:37:30,521 --> 00:37:33,340
+qui est la plateforme mais en revanche si vos développeurs
+
+569
+00:37:34,080 --> 00:37:38,420
+n'aiment pas la plateforme votre projet plateforme il va va
+
+570
+00:37:39,335 --> 00:37:42,951
+va s'arrêter donc c'est vraiment une approche ascendante d up
+
+571
+00:37:43,530 --> 00:37:49,476
+et il très important d'appliquer les managers les équipes produits,
+
+572
+00:37:50,214 --> 00:37:54,525
+les coachs agiles, les développeurs dès le début dans la
+
+573
+00:37:54,526 --> 00:38:00,524
+conception de la exemple de votre plateforme passer à la
+
+574
+00:38:00,525 --> 00:38:06,067
+conclusion voilà donc si vous avez besoin d'accélérer vos rythme
+
+575
+00:38:06,068 --> 00:38:11,554
+de livraison actuellement très très probable que opter pour des
+
+576
+00:38:11,555 --> 00:38:19,702
+plateformes une plateforme voilà plus vous allez embaucher rapidement des
+
+577
+00:38:19,703 --> 00:38:22,988
+développeurs plus vous allez devoir faire en sorte qu'ils puissent
+
+578
+00:38:22,989 --> 00:38:25,985
+déployer des choses vite et bien si ça prend des
+
+579
+00:38:25,986 --> 00:38:28,262
+mois les équipes vont pas efficaces tout de suite donc
+
+580
+00:38:28,263 --> 00:38:31,352
+une plateforme ça va permet d'avoir tes équipes arrivent très
+
+581
+00:38:31,353 --> 00:38:36,859
+vite chez vous pour des déployer des services et tout
+
+582
+00:38:36,860 --> 00:38:39,950
+de suite de de l'innovation leur demander d'abord de choisir
+
+583
+00:38:39,951 --> 00:38:44,630
+leurs outils pour déployer La plateforme c'est vraiment un accélérateur
+
+584
+00:38:44,631 --> 00:38:50,383
+c'est manière d tous ses process et la deuxième chose
+
+585
+00:38:52,000 --> 00:38:59,075
+2023 c'est vraiment sur des plateformes vous avez ici daniel
+
+586
+00:38:59,076 --> 00:39:03,513
+bryan qui vient de mettre la le 18 février sur
+
+587
+00:39:03,514 --> 00:39:05,748
+un fil twitter un ensemble de choses vous invite à
+
+588
+00:39:05,749 --> 00:39:11,570
+les regarder il y ya vraiment beaucoup de choses et
+
+589
+00:39:12,705 --> 00:39:17,053
+lui lui-même si dit que c'est finalement probablement le nouveau
+
+590
+00:39:17,054 --> 00:39:18,011
+développe lieu nouveau vous.
+
+591
+00:39:19,062 --> 00:39:20,379
+Je ne sais pas si c'est vrai mais en tout
+
+592
+00:39:20,380 --> 00:39:25,483
+cas fait est assez intéressant pour le voir vais m'arrêter
+
+593
+00:39:25,484 --> 00:39:28,569
+là donc vous pouvez aussi me trouver sur twitter je
+
+594
+00:39:28,570 --> 00:39:31,283
+tweet pas tant que ça en revanche j'ai pas mal
+
+595
+00:39:31,284 --> 00:39:34,476
+d'articles sur médium disponibles depuis janvier autour de ce sujet
+
+596
+00:39:34,477 --> 00:39:36,391
+donc on peut approfondir un certain nombre de choses que
+
+597
+00:39:36,392 --> 00:39:40,278
+j'ai balayé dans cette présentation donc voilà si ça vous
+
+598
+00:39:40,279 --> 00:39:43,391
+intéresse vous invite à le lire ou à commenter monter
+
+599
+00:39:43,392 --> 00:39:47,556
+et je serais ravi faire des choses là dessus vous
+
+600
+00:39:47,557 --> 00:39:52,125
+pouvez trouver sur la snow ou slash snow sur twitter
+
+601
+00:39:54,875 --> 00:39:58,755
+une dernière chose je pense que l'avenir des plateformes est
+
+602
+00:39:58,756 --> 00:40:02,007
+très prometteur mais il faut pas oublier les principes ainsi
+
+603
+00:40:02,008 --> 00:40:05,639
+pour la vers les plateformes une plateforme ça peut être
+
+604
+00:40:05,640 --> 00:40:09,511
+un gain incroyable dans une organisation pour accélérer l'innovation et
+
+605
+00:40:09,512 --> 00:40:12,202
+ça peut être aussi un frein il faut absolument que
+
+606
+00:40:12,203 --> 00:40:15,198
+vous voyez votre plateforme comme un produit comme n'importe quel
+
+607
+00:40:15,199 --> 00:40:16,995
+autre produit numérique dans votre organisation.
+
+608
+00:40:17,889 --> 00:40:20,926
+Si c'est pas le cas il est probable que vous
+
+609
+00:40:20,927 --> 00:40:24,043
+ayez une adoption de votre produit et ça devienne un
+
+610
+00:40:24,044 --> 00:40:27,375
+frein donc il faut vraiment penser la plateforme même si
+
+611
+00:40:27,376 --> 00:40:29,515
+c'est un sous-jacent même si ça m'a manipule plus de
+
+612
+00:40:30,255 --> 00:40:33,415
+comme un produit numérique dans votre organisation c'est la clé
+
+613
+00:40:33,416 --> 00:40:37,627
+probablement pour que ça ça fonctionne et voilà est-ce qu'on
+
+614
+00:40:37,628 --> 00:40:44,988
+a des questions et merci beaucoup Clément cette présentation plus
+
+615
+00:40:44,989 --> 00:40:48,734
+bien exhaustive c'était hyper intéressant ce qui était cool c'est
+
+616
+00:40:48,735 --> 00:40:50,170
+qu'il y a pas mal de questions qui se sont
+
+617
+00:40:50,171 --> 00:40:54,060
+posées et que répondait en fait une deux slide d'après
+
+618
+00:40:54,061 --> 00:40:56,060
+on va quand même essayer de poser un tout petit
+
+619
+00:40:56,061 --> 00:41:01,015
+peu des questions autour de l'équipe justement de l'équipe plateforme
+
+620
+00:41:02,275 --> 00:41:06,475
+j'essaie d'un peu d'a différentes questions qui ont été posées
+
+621
+00:41:06,476 --> 00:41:09,046
+que en a parlé avec le schéma que c'est d'abord
+
+622
+00:41:09,047 --> 00:41:13,475
+plusieurs petites équipes peut-être que pense une question c'est que
+
+623
+00:41:13,476 --> 00:41:19,754
+est-ce que la destinée inéluctable de de plateforme et de
+
+624
+00:41:19,755 --> 00:41:22,148
+devenir une équipe même si ça commence un petit peu
+
+625
+00:41:22,149 --> 00:41:26,273
+de manière et parce dans l'organisation petit à petit est
+
+626
+00:41:26,274 --> 00:41:28,388
+est-ce que tu penses que quand on se scale à
+
+627
+00:41:28,389 --> 00:41:30,583
+un moment donné il faut qu'il ait quand même une
+
+628
+00:41:30,584 --> 00:41:37,698
+équipe qui soit dédiée sur ce sujet Alors juste parler
+
+629
+00:41:37,699 --> 00:41:43,079
+de mon expérience chez les ventes privé c'est des départements
+
+630
+00:41:43,657 --> 00:41:47,129
+c'est un département plateforme sécurité par exemple à peu près
+
+631
+00:41:47,130 --> 00:41:48,606
+là 70 personnes chez.
+
+632
+00:41:50,082 --> 00:41:53,887
+Qui créer cette offre plateforme avec des gens qui vont
+
+633
+00:41:53,888 --> 00:41:56,798
+plutôt être se consacrées à la développer par expérience donc
+
+634
+00:41:56,799 --> 00:41:59,909
+vraiment toute cette partie pipeline ce qui va permettre de
+
+635
+00:41:59,910 --> 00:42:05,480
+faire chemin les appli simplifier ça pour les il y
+
+636
+00:42:05,481 --> 00:42:07,720
+aura des gens qui vont s'occuper plus de la partie
+
+637
+00:42:07,721 --> 00:42:12,808
+justement contenant donc c'est pas une équipe mais c'est un
+
+638
+00:42:12,809 --> 00:42:17,118
+vrai département avec plein de micro équipe et oui ça
+
+639
+00:42:17,119 --> 00:42:22,261
+tendance à grossir ça à grossir mais après le rapport
+
+640
+00:42:23,915 --> 00:42:29,960
+rapport équipe de plateforme pour le rapport développeurs logiciels et
+
+641
+00:42:29,961 --> 00:42:37,439
+pas forcément délirant mais vous pouvez faire le choix de
+
+642
+00:42:37,440 --> 00:42:39,431
+d'utiliser une plateforme publiques publique donc il y a plus
+
+643
+00:42:39,432 --> 00:42:41,464
+en plus d'acteurs et puis il a des déjà un
+
+644
+00:42:41,465 --> 00:42:44,553
+peu historiques mais je donne un très historique qui a
+
+645
+00:42:44,554 --> 00:42:47,588
+une offre à peu près peu près plateforme c'est ces
+
+646
+00:42:47,589 --> 00:42:50,600
+notions de base donc des acteurs que par exemple des
+
+647
+00:42:50,601 --> 00:42:56,620
+systèmes de branches sur finalement c'est approche peut-être bon ben
+
+648
+00:42:57,200 --> 00:42:59,373
+il vraiment un modèle tout ça et il y a
+
+649
+00:42:59,374 --> 00:43:04,400
+quand même un certain nombre d d'employés qui travaillent à
+
+650
+00:43:04,401 --> 00:43:09,407
+une plateforme donc c'est plein de compétences différentes et ça
+
+651
+00:43:09,408 --> 00:43:14,601
+peut rapidement grossir mais vraiment l'idée c'est d'avoir un produit
+
+652
+00:43:14,602 --> 00:43:19,843
+utilisable et ce qui est important c'est la communication la
+
+653
+00:43:19,844 --> 00:43:23,686
+coordination au sein de ces équipes plateformes très important pour
+
+654
+00:43:23,687 --> 00:43:27,869
+en faire un produit cohérent dans son ensemble et puis
+
+655
+00:43:27,870 --> 00:43:31,294
+surtout la communication avec les utilisateurs vous faites une plateforme
+
+656
+00:43:32,031 --> 00:43:35,584
+interne votre grande chance c'est que vous pouvez connaître vous
+
+657
+00:43:35,585 --> 00:43:36,901
+connaissez vos utilisateurs.
+
+658
+00:43:36,902 --> 00:43:38,338
+Parce qu'en fait vous pouvez les contacter directement
+
+659
+00:43:38,339 --> 00:43:40,388
+ils sont organisation donc un truc incroyable quand
+
+660
+00:43:40,389 --> 00:43:43,460
+vous faire un produit et parfois il y
+
+661
+00:43:43,461 --> 00:43:46,292
+a certaines équipes ont tendance à l'oublier mais
+
+662
+00:43:46,293 --> 00:43:47,985
+c'est une chance folle vous faites un produit
+
+663
+00:43:47,986 --> 00:43:49,586
+public vous connaissez pas votre vos utilisateurs.
+
+664
+00:43:49,587 --> 00:43:52,306
+Vous savez pas comment votre produit utilisé donc vous avez
+
+665
+00:43:52,307 --> 00:43:55,106
+des problèmes par exemple de monter de version, d'évolution de
+
+666
+00:43:55,107 --> 00:43:58,017
+vos api vous devez gérer de la rétro.
+
+667
+00:43:59,234 --> 00:44:01,030
+Vous n'est pas forcément besoin de ça dans un
+
+668
+00:44:01,031 --> 00:44:04,063
+produit interne vous allez juste bien les on tel
+
+669
+00:44:04,064 --> 00:44:07,231
+la pays on va la dépression vous allez pouvoir
+
+670
+00:44:07,232 --> 00:44:08,308
+aller plus vite et puis vous faut aller tout
+
+671
+00:44:08,309 --> 00:44:10,583
+de suite de voir vos utilisateurs c'est une chance
+
+672
+00:44:10,584 --> 00:44:12,658
+le pouvez faire évoluer votre produit très vite.
+
+673
+00:44:14,429 --> 00:44:18,398
+Cool toujours peut-être sur la partie niveau de l'équipe
+
+674
+00:44:19,453 --> 00:44:23,144
+d'une équipe plateforme d'un département de coût plateforme engine
+
+675
+00:44:25,092 --> 00:44:27,308
+donc on entend qu'il y ya beaucoup de considérations
+
+676
+00:44:27,965 --> 00:44:30,998
+en fera des box qu'il faut quand même considérer
+
+677
+00:44:30,999 --> 00:44:33,965
+ça comme en produit donc au niveau de l'état
+
+678
+00:44:33,966 --> 00:44:36,958
+de la composition de l'équipe du niveau de sécurité
+
+679
+00:44:36,959 --> 00:44:39,033
+ce qu'on peut faire venir aussi des juniors sur
+
+680
+00:44:39,034 --> 00:44:42,766
+ces sujets et peut-être sur les profils qui sont
+
+681
+00:44:42,767 --> 00:44:45,726
+moins techniques de base tu parlais éventuellement d'avoir un
+
+682
+00:44:45,727 --> 00:44:48,626
+Pm quel niveau de technicité qui est important d'avoir
+
+683
+00:44:51,214 --> 00:44:53,723
+il faut probablement le bon niveau d'experts mais mais
+
+684
+00:44:53,724 --> 00:44:58,726
+ce que j'expliquais c'est que il faut aussi répondre
+
+685
+00:44:58,727 --> 00:45:02,446
+aux besoins de développeurs alors les besoins existants ou
+
+686
+00:45:02,447 --> 00:45:05,701
+les besoins des nouveaux développeurs et vous pouvez tout
+
+687
+00:45:05,702 --> 00:45:10,121
+à fait créer votre plateforme à partir des compétences
+
+688
+00:45:11,021 --> 00:45:12,541
+des développeurs que vous avez et vous avez forcément
+
+689
+00:45:12,542 --> 00:45:14,950
+besoin d'avoir que des gens des opérations.
+
+690
+00:45:15,827 --> 00:45:19,294
+En revanche effectivement plus votre équipe est
+
+691
+00:45:19,295 --> 00:45:22,299
+plus épuré pluridisciplinaire plus probablement vous allez
+
+692
+00:45:22,300 --> 00:45:28,325
+pouvoir offrir quelque chose de chouette qui
+
+693
+00:45:28,326 --> 00:45:29,921
+prend compte différents aspects.
+
+694
+00:45:30,576 --> 00:45:37,176
+Donc moi typiquement dans chez l'équipe que j'avais en charge
+
+695
+00:45:37,177 --> 00:45:42,381
+été composé de moitié de de S et développeur avec
+
+696
+00:45:42,382 --> 00:45:48,301
+des gens qui connaissent le développement par exemple de programmes
+
+697
+00:45:48,302 --> 00:45:51,574
+d'intelligence artificielle, des gens qui font du python, des gens
+
+698
+00:45:51,575 --> 00:45:55,007
+qui font et des gens qui viennent de faire des
+
+699
+00:45:55,008 --> 00:46:00,007
+écoles comme des gens plus juniors et on arrive tout
+
+700
+00:46:00,008 --> 00:46:02,718
+à fait à créer un produit avec des gens avec
+
+701
+00:46:02,719 --> 00:46:07,442
+une certaine sonorité et et des gens plus juniors mais
+
+702
+00:46:07,443 --> 00:46:12,651
+il faut il faut effectivement composer le point d'équilibre faire
+
+703
+00:46:12,652 --> 00:46:18,491
+les bons choix de recrutement ça c'est très important une
+
+704
+00:46:18,492 --> 00:46:23,781
+autre question d'a sur c'est vrai pas beaucoup parler d
+
+705
+00:46:23,782 --> 00:46:26,692
+du coup des métriques qui vont permettre de surveiller cette
+
+706
+00:46:26,693 --> 00:46:32,850
+plateforme de pouvoir éventuellement définir des seuils d'alerte comment cette
+
+707
+00:46:32,851 --> 00:46:35,687
+fois ci on pourrait avoir des métriques qui vont mesurer
+
+708
+00:46:35,688 --> 00:46:38,723
+la qualité de cette plateforme auprès des équipes internes des
+
+709
+00:46:38,724 --> 00:46:43,136
+consommateurs comment on peut mesurer le succès finalement d'une plateforme
+
+710
+00:46:43,137 --> 00:46:50,385
+au delà des de peut-être des d classique après ça
+
+711
+00:46:50,386 --> 00:46:53,057
+c'est très classique mais sur un produit il ya cette
+
+712
+00:46:53,058 --> 00:46:56,486
+notion de net promoteur score donc c'est vraiment demander directement
+
+713
+00:46:56,487 --> 00:47:01,245
+aux utilisateurs si ils sont prêts à proposer cette solution
+
+714
+00:47:01,246 --> 00:47:05,332
+et si ils sont sont sont contents et ça c'est
+
+715
+00:47:05,908 --> 00:47:10,631
+finalement une mesure de la satisfaction de ces et celle
+
+716
+00:47:10,632 --> 00:47:13,505
+là aussi est vraiment clair il faut absolument pas se
+
+717
+00:47:13,506 --> 00:47:18,708
+baser uniquement sur sur des métriques techniques mais après si
+
+718
+00:47:18,709 --> 00:47:23,577
+voulez voir si votre produit fonctionne bien effectivement oui vous
+
+719
+00:47:23,578 --> 00:47:28,038
+avez vous allez aussi regarder comment se comporte les systèmes
+
+720
+00:47:28,933 --> 00:47:33,296
+voilà ici si vous avez une énorme perte de paquets
+
+721
+00:47:33,297 --> 00:47:35,816
+sur toutes les requêtes de balance en entrée de votre
+
+722
+00:47:35,817 --> 00:47:39,336
+plateforme et que vous avez un taux de disponibilité qui
+
+723
+00:47:39,337 --> 00:47:42,309
+de 80 ça veut dire que il ya une journée
+
+724
+00:47:42,310 --> 00:47:46,704
+par semaine voire 1.5 jours où ça marche pas il
+
+725
+00:47:46,705 --> 00:47:49,621
+est probable que vous et vos clients finaux parce que
+
+726
+00:47:49,622 --> 00:47:55,350
+vraiment plateforme pour servir les clients finaux c'est vraiment qu'il
+
+727
+00:47:55,351 --> 00:47:58,387
+faut pas oublier des clients finaux vont pas être contents
+
+728
+00:47:58,388 --> 00:48:01,636
+et plateforme va être plus un frein et les qui
+
+729
+00:48:01,637 --> 00:48:04,829
+vont chercher à fuir cette plateforme même si est simplifier
+
+730
+00:48:04,830 --> 00:48:08,341
+les choses si derrière les services qui déploie ne marche
+
+731
+00:48:08,342 --> 00:48:13,891
+pas ça va pas oui il faut que soit aussi
+
+732
+00:48:14,510 --> 00:48:17,787
+le plus irréprochable possible cette si on veut une adoption
+
+733
+00:48:17,788 --> 00:48:22,121
+clairement c'est intéressant c'est vraiment cette notion de plateforme tant
+
+734
+00:48:22,122 --> 00:48:25,161
+produit tous les outils qui vont permettre pas de s'assurer
+
+735
+00:48:25,162 --> 00:48:26,921
+en fait de la qualité de ce produit en fait
+
+736
+00:48:26,922 --> 00:48:30,011
+sont aussi même si on est sur un produit qui
+
+737
+00:48:30,012 --> 00:48:33,879
+est peut-être beaucoup plus tech beaucoup plus en les méthodes
+
+738
+00:48:33,880 --> 00:48:36,909
+et en fait la france est la même que peut
+
+739
+00:48:36,910 --> 00:48:43,143
+côté produit une autre une autre question aussi de sam
+
+740
+00:48:43,144 --> 00:48:48,221
+qui était intéressante c'est l'équilibre entre simplification de la plateforme
+
+741
+00:48:48,222 --> 00:48:51,371
+et peut-être le côté un peu boîte noir où les
+
+742
+00:48:51,372 --> 00:48:55,239
+utilisateurs ne vont pas forcément voir exactement ce qui se
+
+743
+00:48:55,240 --> 00:48:58,569
+passe sous le capot c'est quoi le bon équilibre à
+
+744
+00:48:58,570 --> 00:49:04,004
+trouver justement sur sur cette simplification voilà il faut simplifier
+
+745
+00:49:04,005 --> 00:49:06,655
+mais il faut peut-être pas over non plus sera auto
+
+746
+00:49:06,656 --> 00:49:13,492
+automatique quel est le bon équilibre alors enfin pour moi
+
+747
+00:49:14,921 --> 00:49:17,601
+chose qui nous semble très importants et c'est des pratiques
+
+748
+00:49:17,602 --> 00:49:20,481
+vous voyez dans les organisations et c'est des pratiques que
+
+749
+00:49:20,482 --> 00:49:24,454
+vous allez pouvoir voir dans la conception d'une plateforme dans
+
+750
+00:49:24,455 --> 00:49:27,229
+une organisation qui qui va lancer ce type de projet
+
+751
+00:49:28,604 --> 00:49:33,486
+les notions de sont clairement des notions clés parce que
+
+752
+00:49:33,487 --> 00:49:39,189
+voilà en fait le code va être visible lisible et
+
+753
+00:49:39,190 --> 00:49:41,502
+les gens y apporter un certain nombre de modifications.
+
+754
+00:49:42,236 --> 00:49:45,076
+Parce que qu'on utilise un produit plateforme que le code
+
+755
+00:49:45,077 --> 00:49:49,036
+source dans votre organisation ne doit pas être visible et
+
+756
+00:49:49,037 --> 00:49:51,609
+vous allez pouvoir mettre et essayer de mettre très important
+
+757
+00:49:51,610 --> 00:49:56,496
+en place de autour des différents composants de votre plateforme
+
+758
+00:49:57,034 --> 00:50:00,799
+et faire en sorte que les utilisateurs attendent de cette
+
+759
+00:50:00,800 --> 00:50:04,650
+plateforme puissent participer aux évolutions du produit faire des des
+
+760
+00:50:07,078 --> 00:50:09,909
+et donc ils vont en comprendre les mécanismes des les
+
+761
+00:50:09,910 --> 00:50:13,099
+sous-jacent ça va pas être une black boxe par contre
+
+762
+00:50:13,100 --> 00:50:17,621
+son utilisation oui l'idée de simplifier la vie au quotidien
+
+763
+00:50:17,622 --> 00:50:21,171
+et simplifier la mise sur le marché d'un service à
+
+764
+00:50:21,172 --> 00:50:23,580
+genre de choses donc faut pas que ça devienne une
+
+765
+00:50:23,581 --> 00:50:29,526
+date donc c'est une bonne question on a un peu
+
+766
+00:50:29,527 --> 00:50:33,611
+dépassé notre temps il quelques petites questions le logique sur
+
+767
+00:50:33,612 --> 00:50:36,244
+les utilisateurs interviewé mais mais c'est vrai que a vu
+
+768
+00:50:36,245 --> 00:50:39,037
+je pense que tous les les développeurs de la plateforme
+
+769
+00:50:39,038 --> 00:50:42,848
+tous direct avec cette approche bottom je pense pas le
+
+770
+00:50:42,849 --> 00:50:46,163
+coup d'être interviewé pour vraiment avoir le ressenti des utilisateurs
+
+771
+00:50:46,164 --> 00:50:53,238
+utilisateurs directs benoît proposer aussi quelques métriques intéressantes peuvent être
+
+772
+00:50:53,239 --> 00:50:58,841
+intéressantes à surveiller et il jeter oeil à co ça
+
+773
+00:50:58,842 --> 00:51:01,682
+fait partie des gros acteurs en ce moment qui communique
+
+774
+00:51:01,683 --> 00:51:06,256
+beaucoup et proposent des choses très donc c'est une très
+
+775
+00:51:06,257 --> 00:51:10,856
+bonne remarque et l'interview des utilisateurs effectivement il il faut
+
+776
+00:51:10,857 --> 00:51:14,430
+aller voir un certain nombre de gens se se propose
+
+777
+00:51:14,431 --> 00:51:17,048
+et puis venir avec un protocole de questions déjà établi
+
+778
+00:51:17,786 --> 00:51:19,704
+et puis commencer à définir ce qu'on appelle par exemple
+
+779
+00:51:19,705 --> 00:51:25,116
+des personnes pour votre produit plateforme et ça à définir
+
+780
+00:51:25,117 --> 00:51:27,756
+différents types d'utilisateurs ça peut être vos managers les managers
+
+781
+00:51:27,757 --> 00:51:32,048
+vont vouloir regarder différentes choses en tout cas vont vouloir
+
+782
+00:51:32,049 --> 00:51:35,201
+plutôt peut-être piloter une activité vraiment se comporte le produit
+
+783
+00:51:35,202 --> 00:51:39,112
+les développeurs vont avoir des demandes très spécifiques sur tel
+
+784
+00:51:39,113 --> 00:51:43,678
+technologie va essayer de le comprendre avec les interviews et
+
+785
+00:51:43,679 --> 00:51:45,275
+c'est ce qui va vous permettre de façonner une bonne
+
+786
+00:51:45,276 --> 00:51:53,907
+plateforme il doit des pme cette démarche Merci à toutes
+
+787
+00:51:53,908 --> 00:51:58,572
+et à tous euh pour pour votre et vos questions
+
+788
+00:51:58,573 --> 00:52:03,093
+merci beaucoup clément pour cette présentation c'était hyper intéressant est
+
+789
+00:52:03,094 --> 00:52:07,161
+hyper clair pour être bien préparé voilà cette cette année
+
+790
+00:52:07,162 --> 00:52:13,011
+qui se semble tourner autour des des plateformes si pour
+
+791
+00:52:13,012 --> 00:52:16,011
+tout ceux qui est étaient présents ont continué avec de
+
+792
+00:52:16,012 --> 00:52:18,702
+faire pas mal de masse classe toutes les semaines on
+
+793
+00:52:18,703 --> 00:52:21,735
+une autre la semaine prochaine plus sur codes sur les
+
+794
+00:52:21,736 --> 00:52:25,047
+petites techniques de re facto on va donc publier aussi
+
+795
+00:52:25,048 --> 00:52:28,538
+des régulièrement on peut vous accompagner ou bien dans votre
+
+796
+00:52:28,539 --> 00:52:33,532
+recrutement côté tech que soit data des box mais aussi
+
+797
+00:52:33,533 --> 00:52:38,571
+produit et puis on peut également s'occuper de trouver votre
+
+798
+00:52:38,572 --> 00:52:40,564
+prochaine aventure si ça vous intéresse.
+
+799
+00:52:41,122 --> 00:52:44,687
+Merci à tous et à toutes et puis je vous
+
+800
+00:52:44,688 --> 00:52:48,001
+dis bon appétit merci encore clément merci Lucie pour le
+
+801
+00:52:48,002 --> 00:52:52,700
+costume et on se retrouve très bientôt merci beaucoup salut
