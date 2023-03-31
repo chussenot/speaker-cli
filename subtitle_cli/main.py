@@ -2,6 +2,29 @@ import click
 import curses
 import time
 
+class SubtitlePlayer:
+    def __init__(self, subtitles):
+        self.subtitles = subtitles
+        self.index = 0
+        self.paused = False
+
+    def toggle_pause(self):
+        self.paused = not self.paused
+
+    def previous(self):
+        if self.index > 0:
+            self.index -= 1
+
+    def has_next(self):
+        return self.index < len(self.subtitles) - 1
+
+    def next(self):
+        if self.has_next():
+            self.index += 1
+
+    def get_current(self):
+        return self.subtitles[self.index]
+
 def parse_srt(subtitle_file):
     with open(subtitle_file, "r") as f:
         content = f.read()
@@ -28,30 +51,69 @@ def parse_srt(subtitle_file):
 
     return subtitles
 
-def play_subtitles(stdscr, subtitles):
+def play_subtitles(stdscr, subtitle_player):
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
-    stdscr.timeout(1)
+    stdscr.timeout(100)
+    stdscr.nodelay(True)
 
     start_time = time.time()
+    paused_time = 0
 
-    for subtitle in subtitles:
-        while time.time() - start_time < subtitle["start"]:
-            time.sleep(0.01)
+    while True:
+        subtitle = subtitle_player.get_current()
+        elapsed_time = time.time() - start_time
 
-        stdscr.addstr(0, 0, subtitle["text"], curses.color_pair(1))
-        stdscr.refresh()
+        if not subtitle_player.paused:
+            if elapsed_time >= subtitle["start"] and elapsed_time <= subtitle["end"]:
+                stdscr.addstr(0, 0, subtitle["text"], curses.color_pair(1))
+                stdscr.refresh()
 
-        while time.time() - start_time < subtitle["end"]:
-            time.sleep(0.01)
+            elif elapsed_time > subtitle["end"]:
+                stdscr.clear()
+                if subtitle_player.has_next():
+                    subtitle_player.next()
+                else:
+                    break
 
-        stdscr.clear()
+        key = stdscr.getch()
+        if key == ord('q'):
+            break
+        elif key == ord('p'):
+            subtitle_player.previous()
+            start_time = time.time() - subtitle["start"]
+        elif key == ord('n'):
+            if subtitle_player.has_next():
+                subtitle_player.next()
+                start_time = time.time() - subtitle["start"]
+        elif key == ord(' '):
+            subtitle_player.toggle_pause()
+            if subtitle_player.paused:
+                paused_time = time.time()
+            else:
+                start_time += time.time() - paused_time
+                paused_time = 0
+
+@click.group()
+def cli():
+    pass
+
+@cli.command()
+@click.argument("subtitles", type=click.Path(exists=True))
+def play(subtitles):
+    parsed_subtitles = parse_srt(subtitles)
+    subtitle_player = SubtitlePlayer(parsed_subtitles)
+    curses.wrapper(play_subtitles, subtitle_player)
 
 @click.command()
-@click.argument("subtitles", type=click.Path(exists=True))
-def cli(subtitles):
-    parsed_subtitles = parse_srt(subtitles)
-    curses.wrapper(play_subtitles, parsed_subtitles)
+def help():
+    click.echo("Subtitle CLI - Keybindings:")
+    click.echo("  p - Previous subtitle")
+    click.echo("  n - Next subtitle")
+    click.echo("  Space - Toggle play/pause")
+    click.echo("  q - Quit playback")
+
+cli.add_command(play, name="play")
+cli.add_command(help, name="help")
 
 if __name__ == "__main__":
     cli()
-
