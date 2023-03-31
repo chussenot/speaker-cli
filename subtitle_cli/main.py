@@ -2,13 +2,47 @@ import click
 import curses
 from curses import KEY_LEFT,KEY_RIGHT,KEY_DOWN,KEY_UP
 import time
+import os
+import signal
+import subprocess
 
 
 class SubtitlePlayer:
-    def __init__(self, subtitles):
+    def __init__(self, subtitles, audio_file=None):
         self.subtitles = subtitles
         self.index = 0
         self.paused = False
+        self.audio_file = audio_file
+        self.audio_process = None
+        self.audio_paused = False
+
+    def play_audio(self):
+        self.audio_process = subprocess.Popen(
+            ["ffmpeg", "-i", self.audio_file, "-f", "sndio", "default"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
+
+    def stop_audio(self):
+        if self.audio_process:
+            self.audio_process.terminate()
+            self.audio_process.wait()
+
+    def pause_audio(self):
+        if self.audio_process:
+            os.kill(self.audio_process.pid, signal.SIGSTOP)
+
+    def resume_audio(self):
+        if self.audio_process:
+            os.kill(self.audio_process.pid, signal.SIGCONT)
+
+    def toggle_audio(self):
+        if self.audio_process:
+            if self.audio_paused:
+                self.resume_audio()
+            else:
+                self.pause_audio()
+            self.audio_paused = not self.audio_paused
 
     @property
     def current_position(self):
@@ -16,9 +50,16 @@ class SubtitlePlayer:
 
     def pause(self):
         self.paused = True
+        if not self.audio_paused:
+            os.kill(self.audio_process.pid, signal.SIGSTOP)
+            self.audio_paused = True
+
+
 
     def toggle_pause(self):
         self.paused = not self.paused
+        if self.audio_process:
+            self.toggle_audio()
 
     def previous(self):
         if self.index > 0:
@@ -135,12 +176,16 @@ def play_subtitles(stdscr, subtitle_player):
 def cli():
     pass
 
-@cli.command()
+@click.command()
 @click.argument("subtitles", type=click.Path(exists=True))
-def play(subtitles):
+@click.option("--audio", type=click.Path(exists=True), help="Audio file to play along with subtitles")
+def play(subtitles, audio):
     parsed_subtitles = parse_srt(subtitles)
-    subtitle_player = SubtitlePlayer(parsed_subtitles)
+    subtitle_player = SubtitlePlayer(parsed_subtitles, audio_file=audio)
+    if audio:
+        subtitle_player.play_audio()
     curses.wrapper(play_subtitles, subtitle_player)
+    subtitle_player.stop_audio()
 
 @click.command()
 def help():
