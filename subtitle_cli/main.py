@@ -15,6 +15,24 @@ class SubtitlePlayer:
         self.audio_file = audio_file
         self.audio_process = None
         self.audio_paused = False
+        self.update_audio_position = False
+
+    def toggle_pause(self):
+        self.paused = not self.paused
+        if self.audio_process:
+            self.toggle_audio()
+            if not self.paused and self.update_audio_position:
+                self.seek_audio(self.subtitles[self.index]["start"])
+                self.update_audio_position = False
+
+    def seek_audio(self, time):
+        if self.audio_process:
+            self.stop_audio()
+        self.audio_process = subprocess.Popen(
+            ["ffmpeg", "-ss", str(time), "-i", self.audio_file, "-f", "sndio", "default"],
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL
+        )
 
     def play_audio(self):
         self.audio_process = subprocess.Popen(
@@ -135,7 +153,7 @@ def play_subtitles(stdscr, subtitle_player):
             stdscr.refresh()
 
         play_status = "Playing" if not subtitle_player.paused else "Paused  "
-        stdscr.addstr(3, 0, f"Status: {play_status}", curses.color_pair(1))
+        stdscr.addstr(1, 0, f"Status: {play_status}", curses.color_pair(1))
         stdscr.refresh()
 
         if key == ord('q'):
@@ -144,6 +162,7 @@ def play_subtitles(stdscr, subtitle_player):
             subtitle_player.previous()
             start_time = time.time() - subtitle["start"]
             subtitle_player.pause()
+            subtitle_player.update_audio_position = True
             stdscr.clear()
             # Force display new subtitle
             stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))
@@ -153,6 +172,7 @@ def play_subtitles(stdscr, subtitle_player):
                 subtitle_player.next()
                 start_time = time.time() - subtitle["start"]
                 subtitle_player.pause()
+                subtitle_player.update_audio_position = True
             stdscr.clear()
             # Force display new subtitle
             stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))

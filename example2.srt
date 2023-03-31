@@ -1,0 +1,123 @@
+1
+00:00:00,330 --> 00:00:03,332
+Let's move on to the business axis simplifying and
+
+2
+00:00:03,333 --> 00:00:06,458
+offering a standard to the teams with good technologies.
+
+3
+00:00:06,459 --> 00:00:08,388
+I'm okay, but this platform is
+
+4
+00:00:08,389 --> 00:00:10,452
+also there to support the business.
+
+5
+00:00:10,453 --> 00:00:12,836
+It will shape it according to a certain
+
+6
+00:00:12,837 --> 00:00:14,868
+number of dimensions that will be more or
+
+7
+00:00:14,869 --> 00:00:17,306
+less important depending on the organizations.
+
+8
+00:00:17,307 --> 00:00:19,636
+For example, if your project is to offer
+
+9
+00:00:19,637 --> 00:00:22,458
+a public platform for many clients, you won't
+
+10
+00:00:22,459 --> 00:00:24,388
+have the same requirements as if you are
+
+11
+00:00:24,389 --> 00:00:27,330
+building an internal platform for your developers.
+
+12
+00:00:27,331 --> 00:00:30,428
+However, there are common dimensions that can
+
+13
+00:00:30,429 --> 00:00:32,642
+be found in almost all platforms.
+
+14
+00:00:32,643 --> 00:00:34,012
+I have listed some of them.
+
+15
+00:00:34,013 --> 00:00:37,676
+Here we will see dimensions such as ease of use.
+
+16
+00:00:37,677 --> 00:00:42,742
+Indeed, the idea is to remove a kind of cognitive load.
+
+17
+00:00:42,743 --> 00:00:44,992
+Developers must be able to use this
+
+18
+00:00:44,993 --> 00:00:46,678
+platform and the pipelines with ease.
+
+19
+00:00:46,679 --> 00:00:48,896
+But also the platform must provide
+
+20
+00:00:48,897 --> 00:00:50,726
+a certain level of reliability.
+
+21
+00:00:50,727 --> 00:00:52,570
+That's what the organization expects.
+
+22
+00:00:52,571 --> 00:00:55,300
+It wants everything deployed via the platform.
+
+23
+00:00:55,301 --> 00:00:59,306
+Not to break this platform can have a cost dimension.
+
+24
+00:00:59,307 --> 00:01:01,796
+Everything deployed on the platform must
+
+25
+00:01:01,797 --> 00:01:04,042
+be controlled in terms of costs.
+
+26
+00:01:04,043 --> 00:01:06,548
+The platform will also be required to
+
+27
+00:01:06,549 --> 00:01:09,028
+guarantee a certain level of performance so
+
+28
+00:01:09,029 --> 00:01:11,604
+that all services respond quickly.
+
+29
+00:01:11,605 --> 00:01:13,172
+This platform will need to be able
+
+30
+00:01:13,173 --> 00:01:15,228
+to withstand attacks such as Denial of
+
+31
+00:01:15,229 --> 00:01:18,050
+Service or Distributed Denial of service. DDoS.
