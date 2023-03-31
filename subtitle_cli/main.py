@@ -119,6 +119,7 @@ def parse_srt(subtitle_file):
 
     return subtitles
 
+
 def play_subtitles(stdscr, subtitle_player):
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     stdscr.timeout(100)
@@ -128,20 +129,28 @@ def play_subtitles(stdscr, subtitle_player):
     start_time = time.time()
     paused_time = 0
     key_display_time = 0
+    previous_text = ""
 
     while True:
         subtitle = subtitle_player.get_current()
         elapsed_time = time.time() - start_time
 
+        # Get screen dimensions
+        max_y, max_x = stdscr.getmaxyx()
+
+        # Calculate the position to center the subtitle text horizontally
+        text = f"{subtitle_player.current_position} {subtitle['text']}"
+        start_x = (max_x // 2) - (len(text) // 2)
+        start_y = 0
+
         if not subtitle_player.paused:
             if elapsed_time >= subtitle["start"] and elapsed_time <= subtitle["end"]:
-                # stdscr.addstr(0, 0, subtitle["text"], curses.color_pair(1))
-                stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))
-
-                stdscr.refresh()
-
+                if text != previous_text:
+                    stdscr.clear()
+                    stdscr.addstr(start_y, start_x, text, curses.color_pair(1))
+                    stdscr.refresh()
+                    previous_text = text
             elif elapsed_time > subtitle["end"]:
-                stdscr.clear()
                 if subtitle_player.has_next():
                     subtitle_player.next()
                 else:
@@ -153,7 +162,7 @@ def play_subtitles(stdscr, subtitle_player):
             stdscr.refresh()
 
         play_status = "Playing" if not subtitle_player.paused else "Paused  "
-        stdscr.addstr(1, 0, f"Status: {play_status}", curses.color_pair(1))
+        stdscr.addstr(3, 0, f"Status: {play_status}", curses.color_pair(1))
         stdscr.refresh()
 
         if key == ord('q'):
@@ -162,21 +171,21 @@ def play_subtitles(stdscr, subtitle_player):
             subtitle_player.previous()
             start_time = time.time() - subtitle["start"]
             subtitle_player.pause()
-            subtitle_player.update_audio_position = True
             stdscr.clear()
             # Force display new subtitle
-            stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))
+            stdscr.addstr(start_y, start_x, text, curses.color_pair(1))
             stdscr.refresh()
+            previous_text = text
         elif key == KEY_RIGHT:
             if subtitle_player.has_next():
                 subtitle_player.next()
                 start_time = time.time() - subtitle["start"]
                 subtitle_player.pause()
-                subtitle_player.update_audio_position = True
             stdscr.clear()
             # Force display new subtitle
-            stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))
+            stdscr.addstr(start_y, start_x, text, curses.color_pair(1))
             stdscr.refresh()
+            previous_text = text
         elif key == ord(' '):
             subtitle_player.toggle_pause()
             if subtitle_player.paused:
