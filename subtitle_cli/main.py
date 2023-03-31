@@ -140,10 +140,10 @@ def play(subtitles):
 @click.command()
 def help():
     click.echo("Subtitle CLI - Keybindings:")
-    click.echo("  p - Previous subtitle")
-    click.echo("  n - Next subtitle")
-    click.echo("  Space - Toggle play/pause")
-    click.echo("  q - Quit playback")
+    click.echo("  KEY_LEFT   - Previous subtitle")
+    click.echo("  KEY_RIGHT  - Next subtitle")
+    click.echo("  SPACE      - Toggle play/pause")
+    click.echo("  q          - Quit playback")
 
 cli.add_command(play, name="play")
 cli.add_command(help, name="help")
