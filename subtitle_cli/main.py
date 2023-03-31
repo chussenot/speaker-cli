@@ -2,6 +2,7 @@ import click
 import curses
 import time
 
+
 class SubtitlePlayer:
     def __init__(self, subtitles):
         self.subtitles = subtitles
@@ -51,13 +52,16 @@ def parse_srt(subtitle_file):
 
     return subtitles
 
+
 def play_subtitles(stdscr, subtitle_player):
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     stdscr.timeout(100)
     stdscr.nodelay(True)
+    curses.curs_set(0)
 
     start_time = time.time()
     paused_time = 0
+    key_display_time = 0
 
     while True:
         subtitle = subtitle_player.get_current()
@@ -76,15 +80,32 @@ def play_subtitles(stdscr, subtitle_player):
                     break
 
         key = stdscr.getch()
+        if key != -1:
+            stdscr.addstr(4, 0, f"Pressed key: {chr(key) if key != ord(' ') else '<SPACE>'}", curses.color_pair(1))
+            stdscr.refresh()
+            key_display_time = time.time()
+
+        if time.time() - key_display_time > 1:
+            stdscr.addstr(2, 0, " " * 20, curses.color_pair(1))
+            stdscr.refresh()
+
+        play_status = "Playing" if not subtitle_player.paused else "Paused "
+        stdscr.addstr(3, 0, f"Status: {play_status}", curses.color_pair(1))
+        stdscr.refresh()
+
         if key == ord('q'):
             break
         elif key == ord('p'):
             subtitle_player.previous()
             start_time = time.time() - subtitle["start"]
+            stdscr.clear()
+            stdscr.refresh()
         elif key == ord('n'):
             if subtitle_player.has_next():
                 subtitle_player.next()
                 start_time = time.time() - subtitle["start"]
+            stdscr.clear()
+            stdscr.refresh()
         elif key == ord(' '):
             subtitle_player.toggle_pause()
             if subtitle_player.paused:
@@ -92,6 +113,7 @@ def play_subtitles(stdscr, subtitle_player):
             else:
                 start_time += time.time() - paused_time
                 paused_time = 0
+
 
 @click.group()
 def cli():
