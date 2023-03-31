@@ -1,5 +1,6 @@
 import click
 import curses
+from curses import KEY_LEFT,KEY_RIGHT,KEY_DOWN,KEY_UP
 import time
 
 
@@ -8,6 +9,10 @@ class SubtitlePlayer:
         self.subtitles = subtitles
         self.index = 0
         self.paused = False
+
+    @property
+    def current_position(self):
+        return f"[{self.index + 1:03d}/{len(self.subtitles):d}]"
 
     def toggle_pause(self):
         self.paused = not self.paused
@@ -52,7 +57,6 @@ def parse_srt(subtitle_file):
 
     return subtitles
 
-
 def play_subtitles(stdscr, subtitle_player):
     curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     stdscr.timeout(100)
@@ -69,7 +73,9 @@ def play_subtitles(stdscr, subtitle_player):
 
         if not subtitle_player.paused:
             if elapsed_time >= subtitle["start"] and elapsed_time <= subtitle["end"]:
-                stdscr.addstr(0, 0, subtitle["text"], curses.color_pair(1))
+                # stdscr.addstr(0, 0, subtitle["text"], curses.color_pair(1))
+                stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))
+
                 stdscr.refresh()
 
             elif elapsed_time > subtitle["end"]:
@@ -80,31 +86,30 @@ def play_subtitles(stdscr, subtitle_player):
                     break
 
         key = stdscr.getch()
-        if key != -1:
-            stdscr.addstr(4, 0, f"Pressed key: {chr(key) if key != ord(' ') else '<SPACE>'}", curses.color_pair(1))
-            stdscr.refresh()
-            key_display_time = time.time()
-
         if time.time() - key_display_time > 1:
             stdscr.addstr(2, 0, " " * 20, curses.color_pair(1))
             stdscr.refresh()
 
-        play_status = "Playing" if not subtitle_player.paused else "Paused "
+        play_status = "Playing" if not subtitle_player.paused else "Paused  "
         stdscr.addstr(3, 0, f"Status: {play_status}", curses.color_pair(1))
         stdscr.refresh()
 
         if key == ord('q'):
             break
-        elif key == ord('p'):
+        elif key == KEY_LEFT:
             subtitle_player.previous()
             start_time = time.time() - subtitle["start"]
             stdscr.clear()
+            # Force display new subtitle
+            stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))
             stdscr.refresh()
-        elif key == ord('n'):
+        elif key == KEY_RIGHT:
             if subtitle_player.has_next():
                 subtitle_player.next()
                 start_time = time.time() - subtitle["start"]
             stdscr.clear()
+            # Force display new subtitle
+            stdscr.addstr(0, 0, f"{subtitle_player.current_position} {subtitle['text']}", curses.color_pair(1))
             stdscr.refresh()
         elif key == ord(' '):
             subtitle_player.toggle_pause()
@@ -113,6 +118,12 @@ def play_subtitles(stdscr, subtitle_player):
             else:
                 start_time += time.time() - paused_time
                 paused_time = 0
+
+        if key != -1:
+            stdscr.addstr(2, 0, f"Pressed key: {chr(key) if key != ord(' ') else '<SPACE>'}", curses.color_pair(1))
+            stdscr.refresh()
+            key_display_time = time.time()
+
 
 
 @click.group()
