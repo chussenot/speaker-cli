@@ -1,204 +1,72 @@
 import click
 import curses
-from curses import KEY_LEFT,KEY_RIGHT,KEY_DOWN,KEY_UP
 import time
 import os
 import signal
 import subprocess
 
+KEY_LEFT, KEY_RIGHT, KEY_DOWN, KEY_UP = curses.KEY_LEFT, curses.KEY_RIGHT, curses.KEY_DOWN, curses.KEY_UP
 
 class SubtitlePlayer:
     def __init__(self, subtitles, audio_file=None):
-        self.subtitles = subtitles
-        self.index = 0
-        self.paused = False
-        self.audio_file = audio_file
-        self.audio_process = None
-        self.audio_paused = False
-        self.update_audio_position = False
+        self.subtitles, self.index, self.paused, self.audio_file = subtitles, 0, False, audio_file
+        self.audio_process, self.audio_paused, self.update_audio_position = None, False, False
 
     def toggle_pause(self):
         self.paused = not self.paused
-        if self.audio_process:
-            self.toggle_audio()
-            if not self.paused and self.update_audio_position:
-                self.seek_audio(self.subtitles[self.index]["start"])
-                self.update_audio_position = False
+        self.toggle_audio()
 
-    def seek_audio(self, time):
-        if self.audio_process:
-            self.stop_audio()
-        self.audio_process = subprocess.Popen(
-            ["ffmpeg", "-ss", str(time), "-i", self.audio_file, "-f", "sndio", "default"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
-        )
-
-    def play_audio(self):
-        self.audio_process = subprocess.Popen(
-            ["ffmpeg", "-i", self.audio_file, "-f", "sndio", "default"],
-            stdout=subprocess.DEVNULL,
-            stderr=subprocess.DEVNULL
-        )
+    def play_audio(self, time='00:00:00'):
+        if self.audio_process: self.stop_audio()
+        time = self.get_current()["start_time"]
+        self.audio_process = subprocess.Popen(["ffmpeg", "-ss", time, "-i", self.audio_file, "-f", "sndio", "default"], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
     def stop_audio(self):
-        if self.audio_process:
-            self.audio_process.terminate()
-            self.audio_process.wait()
+        if self.audio_process: self.audio_process.terminate(), self.audio_process.wait()
 
     def pause_audio(self):
-        if self.audio_process:
-            os.kill(self.audio_process.pid, signal.SIGSTOP)
+        if self.audio_process: os.kill(self.audio_process.pid, signal.SIGSTOP)
 
     def resume_audio(self):
-        if self.audio_process:
-            os.kill(self.audio_process.pid, signal.SIGCONT)
+        if self.audio_process: os.kill(self.audio_process.pid, signal.SIGCONT)
 
     def toggle_audio(self):
         if self.audio_process:
-            if self.audio_paused:
-                self.resume_audio()
-            else:
-                self.pause_audio()
+            self.resume_audio() if self.audio_paused else self.pause_audio()
             self.audio_paused = not self.audio_paused
 
     @property
-    def current_position(self):
-        return f"[{self.index + 1:03d}/{len(self.subtitles):d}]"
+    def current_position(self): return f"[{self.index + 1:03d}/{len(self.subtitles):d}]"
 
     def pause(self):
         self.paused = True
-        if not self.audio_paused:
-            os.kill(self.audio_process.pid, signal.SIGSTOP)
-            self.audio_paused = True
-
-
-
-    def toggle_pause(self):
-        self.paused = not self.paused
-        if self.audio_process:
-            self.toggle_audio()
+        if not self.audio_paused: os.kill(self.audio_process.pid, signal.SIGSTOP), setattr(self, "audio_paused", True)
 
     def previous(self):
-        if self.index > 0:
-            self.index -= 1
+        if self.index > 0: self.index -= 1
 
-    def has_next(self):
-        return self.index < len(self.subtitles) - 1
+    def has_next(self): return self.index < len(self.subtitles) - 1
 
     def next(self):
-        if self.has_next():
-            self.index += 1
+        if self.has_next(): self.index += 1
 
-    def get_current(self):
-        return self.subtitles[self.index]
+    def get_current(self): return self.subtitles[self.index]
 
 def parse_srt(subtitle_file):
-    with open(subtitle_file, "r") as f:
-        content = f.read()
-
+    with open(subtitle_file, "r") as f: content = f.read()
     subtitles = []
     for subtitle in content.strip().split("\n\n"):
         index, time_range, *text_lines = subtitle.split("\n")
         start_time, end_time = time_range.split(" --> ")
-
-        start_h, start_m, start_s = start_time.split(":")
-        start_ms = int(start_s.split(",")[1])
-        start_s = int(start_s.split(",")[0])
-
-        end_h, end_m, end_s = end_time.split(":")
-        end_ms = int(end_s.split(",")[1])
-        end_s = int(end_s.split(",")[0])
-
-        start = int(start_h) * 3600 + int(start_m) * 60 + start_s + start_ms / 1000
-        end = int(end_h) * 3600 + int(end_m) * 60 + end_s + end_ms / 1000
-
+        start_h, start_m, start_s, end_h, end_m, end_s = *start_time.split(":"), *end_time.split(":")
+        start_ms, end_ms, start_s, end_s = int(start_s.split(",")[1]), int(end_s.split(",")[1]), int(start_s.split(",")[0]), int(end_s.split(",")[0])
+        start, end = int(start_h) * 3600 + int(start_m) * 60 + start_s + start_ms / 1000, int(end_h) * 3600 + int(end_m) * 60 + end_s + end_ms / 1000
         text = "\n".join(text_lines)
-
-        subtitles.append({"start": start, "end": end, "text": text})
-
+        subtitles.append({"start_time": start_time.split(",")[0], "start": start, "end": end, "text": text})
     return subtitles
 
-
 def play_subtitles(stdscr, subtitle_player):
-    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
-    stdscr.timeout(100)
-    stdscr.nodelay(True)
-    curses.curs_set(0)
-
-    start_time = time.time()
-    paused_time = 0
-    key_display_time = 0
-    previous_text = ""
-
-    while True:
-        subtitle = subtitle_player.get_current()
-        elapsed_time = time.time() - start_time
-
-        # Get screen dimensions
-        max_y, max_x = stdscr.getmaxyx()
-
-        # Calculate the position to center the subtitle text horizontally
-        text = f"{subtitle_player.current_position} {subtitle['text']}"
-        start_x = (max_x // 2) - (len(text) // 2)
-        start_y = 0
-
-        if not subtitle_player.paused:
-            if elapsed_time >= subtitle["start"] and elapsed_time <= subtitle["end"]:
-                if text != previous_text:
-                    stdscr.clear()
-                    stdscr.addstr(start_y, start_x, text, curses.color_pair(1))
-                    stdscr.refresh()
-                    previous_text = text
-            elif elapsed_time > subtitle["end"]:
-                if subtitle_player.has_next():
-                    subtitle_player.next()
-                else:
-                    break
-
-        key = stdscr.getch()
-        if time.time() - key_display_time > 1:
-            stdscr.addstr(2, 0, " " * 20, curses.color_pair(1))
-            stdscr.refresh()
-
-        play_status = "Playing" if not subtitle_player.paused else "Paused  "
-        stdscr.addstr(3, 0, f"Status: {play_status}", curses.color_pair(1))
-        stdscr.refresh()
-
-        if key == ord('q'):
-            break
-        elif key == KEY_LEFT:
-            subtitle_player.previous()
-            start_time = time.time() - subtitle["start"]
-            subtitle_player.pause()
-            stdscr.clear()
-            # Force display new subtitle
-            stdscr.addstr(start_y, start_x, text, curses.color_pair(1))
-            stdscr.refresh()
-            previous_text = text
-        elif key == KEY_RIGHT:
-            if subtitle_player.has_next():
-                subtitle_player.next()
-                start_time = time.time() - subtitle["start"]
-                subtitle_player.pause()
-            stdscr.clear()
-            # Force display new subtitle
-            stdscr.addstr(start_y, start_x, text, curses.color_pair(1))
-            stdscr.refresh()
-            previous_text = text
-        elif key == ord(' '):
-            subtitle_player.toggle_pause()
-            if subtitle_player.paused:
-                paused_time = time.time()
-            else:
-                start_time += time.time() - paused_time
-                paused_time = 0
-
-        if key != -1:
-            stdscr.addstr(2, 0, f"Pressed key: {chr(key) if key != ord(' ') else '<SPACE>'}", curses.color_pair(1))
-            stdscr.refresh()
-            key_display_time = time.time()
-
+    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK), stdscr.timeout(100), stdscr.nodelay(True), curses.curs_set(
 
 
 @click.group()
@@ -212,7 +80,7 @@ def play(subtitles, audio):
     parsed_subtitles = parse_srt(subtitles)
     subtitle_player = SubtitlePlayer(parsed_subtitles, audio_file=audio)
     if audio:
-        subtitle_player.play_audio()
+        subtitle_player.play_audio('00:00:00')
     curses.wrapper(play_subtitles, subtitle_player)
     subtitle_player.stop_audio()
 
